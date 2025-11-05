@@ -4,51 +4,44 @@ import java.sql.Date;
 
 public class Person {
 
-    private String apellido;
-    private String nombre;
+    private String lastName;
+    private String firstName;
     private Integer dni;
-    private Date fechaNac;
-    private City ciudad;
+    private Date birthDate;
+    private City city;
 
     public Person() {
     }
 
-    public Person(String apellido, String nombre, Integer dni, Date fechaNac, City ciudad) {
-        this.apellido = apellido;
-        this.nombre = nombre;
+    public Person(String lastName, String firstName, Integer dni, Date birthDate, City city) {
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.dni = dni;
-        this.fechaNac = fechaNac;
-        this.ciudad = ciudad;
+        this.birthDate = birthDate;
+        this.city = city;
     }
 
-    public Person(String apellido, String nombre, Integer dni, String fechaNacYmd, City ciudad) {
-        this(apellido, nombre, dni,
-                (fechaNacYmd == null || fechaNacYmd.isEmpty()) ? null
-                : Date.valueOf(fechaNacYmd.replace('/', '-')),
-                ciudad);
+    public Person(String lastName, String firstName, Integer dni, String birthDateYmd, City city) {
+        this(lastName, firstName, dni,
+                (birthDateYmd == null || birthDateYmd.isEmpty()) ? null
+                : Date.valueOf(birthDateYmd.replace('/', '-')),
+                city);
     }
 
-    private static Date parseSqlDate(String ymd) {
-        if (ymd == null || ymd.isEmpty()) {
-            return null;
-        }
-        return Date.valueOf(ymd.replace('/', '-'));
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getApellido() {
-        return apellido;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public Integer getDni() {
@@ -59,26 +52,25 @@ public class Person {
         this.dni = dni;
     }
 
-    public Date getFechaNac() {
-        return fechaNac;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setFechaNac(Date fechaNac) {
-        this.fechaNac = fechaNac;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public City getCiudad() {
-        return ciudad;
+    public City getCity() {
+        return city;
     }
 
-    public void setCiudad(City ciudad) {
-        this.ciudad = ciudad;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
     public String toString() {
-        return "{Person[" + "apellido:" + apellido + ", nombre:" + nombre + ", dni:" + dni + ", fechaNac:" + fechaNac + ", ciudad:" + ciudad + "]}";
+        return "{Person[" + "lastName:" + lastName + ", firstName:" + firstName + ", dni:" + dni + ", birthDate:" + birthDate + ", city:" + city + "]}";
     }
 
 }
-

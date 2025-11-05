@@ -2,35 +2,34 @@ package model;
 
 public class Professor extends Person {
 
-    private Integer antiguedad;
+    private Integer seniority;
 
     public Professor() {
     }
 
-    public Professor(Integer antiguedad) {
-        this.antiguedad = antiguedad;
+    public Professor(Integer seniority) {
+        this.seniority = seniority;
     }
 
-    public Professor(Integer antiguedad,
-            String apellido, String nombre,
-            Integer dni, String fechaNac,
-            City ciudad) {
-        super(apellido, nombre, dni, fechaNac, ciudad);
-        this.antiguedad = antiguedad;
+    public Professor(Integer seniority,
+            String lastName, String firstName,
+            Integer dni, String birthDateYmd,
+            City city) {
+        super(lastName, firstName, dni, birthDateYmd, city);
+        this.seniority = seniority;
     }
 
-    public Integer getAntiguedad() {
-        return antiguedad;
+    public Integer getSeniority() {
+        return seniority;
     }
 
-    public void setAntiguedad(Integer antiguedad) {
-        this.antiguedad = antiguedad;
+    public void setSeniority(Integer seniority) {
+        this.seniority = seniority;
     }
 
     @Override
     public String toString() {
-        return "{Professor[" + "antiguedad:" + antiguedad + "]}";
+        return "{Professor[" + "seniority:" + seniority + "]}";
     }
 
 }
-

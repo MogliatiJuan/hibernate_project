@@ -2,48 +2,45 @@ package model;
 
 public class Faculty {
     
-    private Integer idFacultad;
-    private String nombre;
-    private City ciudad;
+    private Integer idFaculty;
+    private String name;
+    private City city;
 
     public Faculty() {
     }
 
-    public Faculty(String nombre, City ciudad) {
-        this.nombre = nombre;
-        this.ciudad = ciudad;
+    public Faculty(String name, City city) {
+        this.name = name;
+        this.city = city;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public City getCiudad() {
-        return ciudad;
+    public City getCity() {
+        return city;
     }
 
-    public void setCiudad(City ciudad) {
-        this.ciudad = ciudad;
+    public void setCity(City city) {
+        this.city = city;
     }
 
-    public Integer getIdFacultad() {
-        return idFacultad;
+    public Integer getIdFaculty() {
+        return idFaculty;
     }
 
-    public void setIdFacultad(Integer idFacultad) {
-        this.idFacultad = idFacultad;
+    public void setIdFaculty(Integer idFaculty) {
+        this.idFaculty = idFaculty;
     }
 
-    
-    
     @Override
     public String toString() {
-        return "{Faculty[" + "nombre:" + nombre + ", ciudad:" + ciudad + "]}";
+        return "{Faculty[" + "name:" + name + ", city:" + city + "]}";
     }
 
 }
-

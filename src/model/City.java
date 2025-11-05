@@ -2,36 +2,35 @@ package model;
 
 public class City {
 
-    private String nombre;
-    private Integer idCiudad;
+    private String name;
+    private Integer idCity;
 
     public City() {
     }
 
-    public City(String nombre) {
-        this.nombre = nombre;
+    public City(String name) {
+        this.name = name;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getIdCiudad() {
-        return idCiudad;
+    public Integer getIdCity() {
+        return idCity;
     }
 
-    public void setIdCiudad(Integer idCiudad) {
-        this.idCiudad = idCiudad;
+    public void setIdCity(Integer idCity) {
+        this.idCity = idCity;
     }
 
     @Override
     public String toString() {
-        return "{City: " + nombre + "}";
+        return "{City: " + name + "}";
     }
 
 }
-

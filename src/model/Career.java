@@ -5,68 +5,67 @@ import java.util.List;
 
 public class Career {
 
-    private Integer idCarrera;
-    private String nombre;
-    private Faculty facultad;
-    private List<Subject> materias = new ArrayList<>();
+    private Integer idCareer;
+    private String name;
+    private Faculty faculty;
+    private List<Subject> subjects = new ArrayList<>();
 
     public Career() {
     }
 
-    public Career(String nombre, Faculty facultad, List<Subject> materias) {
-        this.nombre = nombre;
-        this.facultad = facultad;
-        if (materias != null) {
-            this.materias = materias;
+    public Career(String name, Faculty faculty, List<Subject> subjects) {
+        this.name = name;
+        this.faculty = faculty;
+        if (subjects != null) {
+            this.subjects = subjects;
         }
     }
 
-    public Career(String nombre, Faculty facultad) {
-        this.nombre = nombre;
-        this.facultad = facultad;
-        this.materias = new ArrayList<>();
+    public Career(String name, Faculty faculty) {
+        this.name = name;
+        this.faculty = faculty;
+        this.subjects = new ArrayList<>();
     }
 
-    public Integer getIdCarrera() {
-        return idCarrera;
+    public Integer getIdCareer() {
+        return idCareer;
     }
 
-    public void setIdCarrera(Integer idCarrera) {
-        this.idCarrera = idCarrera;
+    public void setIdCareer(Integer idCareer) {
+        this.idCareer = idCareer;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Faculty getFacultad() {
-        return facultad;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
-    public void setFacultad(Faculty facultad) {
-        this.facultad = facultad;
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
-    public List<Subject> getMaterias() {
-        return materias;
+    public List<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setMaterias(List<Subject> materias) {
-        this.materias = materias;
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 
     @Override
     public String toString() {
         return "Career{"
-                + "idCarrera=" + idCarrera
-                + ", nombre='" + nombre + '\''
-                + ", facultad=" + (facultad != null ? facultad.getNombre() : "null")
-                + ", materias=" + (materias != null ? materias.size() : 0)
+                + "idCareer=" + idCareer
+                + ", name='" + name + '\''
+                + ", faculty=" + (faculty != null ? faculty.getName() : "null")
+                + ", subjects=" + (subjects != null ? subjects.size() : 0)
                 + '}';
     }
 }
-

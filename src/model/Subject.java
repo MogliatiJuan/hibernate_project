@@ -5,110 +5,109 @@ import java.util.Set;
 
 public class Subject {
 
-    private Integer idMateria;
-    private String nombre;
-    private Integer nivel;
-    private Integer orden;
-    private Professor profesor;
-    private Career carrera;
-    private Set<Student> alumnos = new HashSet<>();
+    private Integer idSubject;
+    private String name;
+    private Integer level;
+    private Integer order;
+    private Professor professor;
+    private Career career;
+    private Set<Student> students = new HashSet<>();
 
     public Subject() {
     }
 
-    public Subject(String nombre, Integer nivel, Integer orden,
-            Professor profesor, Career carrera, Set<Student> alumnos) {
-        this.nombre = nombre;
-        this.nivel = nivel;
-        this.orden = orden;
-        this.profesor = profesor;
-        this.carrera = carrera;
-        if (alumnos != null) {
-            this.alumnos = alumnos;
+    public Subject(String name, Integer level, Integer order,
+            Professor professor, Career career, Set<Student> students) {
+        this.name = name;
+        this.level = level;
+        this.order = order;
+        this.professor = professor;
+        this.career = career;
+        if (students != null) {
+            this.students = students;
         }
     }
 
-    public Integer getIdMateria() {
-        return idMateria;
+    public Integer getIdSubject() {
+        return idSubject;
     }
 
-    public void setIdMateria(Integer idMateria) {
-        this.idMateria = idMateria;
+    public void setIdSubject(Integer idSubject) {
+        this.idSubject = idSubject;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getNivel() {
-        return nivel;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setNivel(Integer nivel) {
-        this.nivel = nivel;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
-    public Integer getOrden() {
-        return orden;
+    public Integer getOrder() {
+        return order;
     }
 
-    public void setOrden(Integer orden) {
-        this.orden = orden;
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 
-    public Professor getProfesor() {
-        return profesor;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public void setProfesor(Professor profesor) {
-        this.profesor = profesor;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
-    public Career getCarrera() {
-        return carrera;
+    public Career getCareer() {
+        return career;
     }
 
-    public void setCarrera(Career carrera) {
-        this.carrera = carrera;
+    public void setCareer(Career career) {
+        this.career = career;
     }
 
-    public Set<Student> getAlumnos() {
-        return alumnos;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setAlumnos(Set<Student> alumnos) {
-        this.alumnos = alumnos;
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
-    public void addAlumno(Student a) {
+    public void addStudent(Student a) {
         if (a == null) {
             return;
         }
-        this.alumnos.add(a);
-        a.getMaterias().add(this);
+        this.students.add(a);
+        a.getSubjects().add(this);
     }
 
-    public void removeAlumno(Student a) {
+    public void removeStudent(Student a) {
         if (a == null) {
             return;
         }
-        this.alumnos.remove(a);
-        a.getMaterias().remove(this);
+        this.students.remove(a);
+        a.getSubjects().remove(this);
     }
 
     @Override
     public String toString() {
-        return "Subject{nombre=" + nombre
-                + ", nivel=" + nivel
-                + ", orden=" + orden
-                + ", profesor=" + (profesor != null ? profesor.getDni() : null)
-                + ", carrera=" + (carrera != null ? carrera.getIdCarrera() : null)
-                + ", alumnos=" + (alumnos != null ? alumnos.size() : 0)
+        return "Subject{name=" + name
+                + ", level=" + level
+                + ", order=" + order
+                + ", professor=" + (professor != null ? professor.getDni() : null)
+                + ", career=" + (career != null ? career.getIdCareer() : null)
+                + ", students=" + (students != null ? students.size() : 0)
                 + "}";
     }
 }
-
