@@ -1,0 +1,44 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs/Editors
+.idea/
+.vscode/
+*.iml
+
+# NetBeans
+nbproject/private/
+
+# Build outputs
+build/
+out/
+target/
+*.class
+
+# Logs and temp
+*.log
+*.tmp
+*.swp
+~$*
+
+# Tooling artifacts
+sources.list
+
+# Docker
+*.pid
+
+# Java tooling
+.mvn/
+.settings/
+.project
+.classpath
+
+# System files
+Desktop.ini
+
+# Local env/config (keep secrets out of repo)
+src/hibernate.cfg.xml.local
+.env
+
+/dist/
