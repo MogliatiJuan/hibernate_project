@@ -21,7 +21,6 @@ public class Person {
         this.ciudad = ciudad;
     }
 
-    // constructor overload
     public Person(String apellido, String nombre, Integer dni, String fechaNacYmd, City ciudad) {
         this(apellido, nombre, dni,
                 (fechaNacYmd == null || fechaNacYmd.isEmpty()) ? null
@@ -29,12 +28,11 @@ public class Person {
                 ciudad);
     }
 
-    // helper
     private static Date parseSqlDate(String ymd) {
         if (ymd == null || ymd.isEmpty()) {
             return null;
         }
-        return Date.valueOf(ymd.replace('/', '-')); // require "yyyy-MM-dd"
+        return Date.valueOf(ymd.replace('/', '-'));
     }
 
     public String getApellido() {

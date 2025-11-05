@@ -84,7 +84,6 @@ public class Subject {
         this.alumnos = alumnos;
     }
 
-    // helpers
     public void addAlumno(Student a) {
         if (a == null) {
             return;

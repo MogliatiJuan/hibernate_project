@@ -67,7 +67,6 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
             Professor p = null;
             if (dniProfessor != null) {
                 p = (Professor) session.get(Professor.class, dniProfessor);
-                // If it doesn't exist, create without professor (no error thrown)
             }
 
             Career c = (Career) session.get(Career.class, idCareer);
@@ -96,26 +95,22 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
         }
         
         executeInTransaction(session -> {
-            // Load the entity fresh to ensure it's attached
             Subject m = (Subject) session.get(Subject.class, materia.getIdSubject());
             if (m == null) {
                 throw new IllegalArgumentException("Subject not found with id: " + materia.getIdSubject());
             }
             
-            // Apply changes from the detached entity
             m.setNombre(materia.getNombre());
             m.setNivel(materia.getNivel());
             m.setOrden(materia.getOrden());
             
-            // Handle Professor: load fresh from database to attach to session
             if (materia.getProfessor() != null) {
                 Professor p = (Professor) session.get(Professor.class, materia.getProfessor().getDni());
-                m.setProfessor(p); // p can be null if profesor was deleted, which is OK
+                m.setProfessor(p);
             } else {
                 m.setProfessor(null);
             }
             
-            // Handle Career: load fresh from database to attach to session
             if (materia.getCareer() != null) {
                 Career c = (Career) session.get(Career.class, materia.getCareer().getIdCareer());
                 if (c == null) {
@@ -126,7 +121,6 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
                 throw new IllegalArgumentException("Career is required for Subject");
             }
             
-            // Save the attached entity
             session.update(m);
             return null;
         });
@@ -139,7 +133,6 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
         }
         
         executeInTransaction(session -> {
-            // Load the entity fresh to ensure it's attached
             Subject m = (Subject) session.get(Subject.class, materia.getIdSubject());
             if (m != null) {
                 session.delete(m);
@@ -148,7 +141,6 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
         });
     }
     
-    // Helper methods for loading related entities (used by ABM)
     public Professor findProfessorById(Integer dni) {
         if (dni == null) {
             return null;

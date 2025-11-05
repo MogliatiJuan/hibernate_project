@@ -27,7 +27,6 @@ public class Career {
         this.materias = new ArrayList<>();
     }
 
-    // getters/setters
     public Integer getIdCarrera() {
         return idCarrera;
     }

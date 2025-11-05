@@ -18,39 +18,34 @@ public class gestorFaculty {
         Session ss = HibernateUtil.getSF().openSession();
         Transaction tx = ss.beginTransaction();
         try {
-            // CIUDAD, FACULTAD, CARRERA
             City c1 = getOrCreateCity(ss, "Cordoba Capital");
             Faculty f1 = getOrCreateFaculty(ss, "Faculty de Sistemas", c1);
             Career ca1 = getOrCreateCareer(ss, "Tecnicatura en TI", f1);
 
-            // PROFESOR (JOINED) – merge evita duplicados por DNI
             Professor p1 = new Professor(
-                    10, // antigüedad (años)
-                    "Martinez", // apellido
-                    "Carlos", // nombre
-                    140559322, // DNI
-                    "1970-12-19", // fecha nac (yyyy-MM-dd)  -> tu Professor acepta String
-                    c1 // ciudad
+                    10,
+                    "Martinez",
+                    "Carlos",
+                    140559322,
+                    "1970-12-19",
+                    c1
             );
             p1 = (Professor) ss.merge(p1);
 
-            // MATERIA – dueña de dniProfessor e idCareer
-            // firma actual: (nombre, nivel, orden, profesor, carrera, alumnos)
             Subject m1 = getOrCreateSubject(ss, "PAV", 3, 1, p1, ca1);
 
-            // ALUMNO (JOINED) – anioIngreso = int, y relación muchos-a-muchos
             Student a1 = new Student(
-                    "Dip Popich", // apellido
-                    "Bruno", // nombre
-                    39575877, // DNI
-                    Date.valueOf("1996-04-02"), // fecha nac
-                    c1, // ciudad
-                    40, // num legajo
-                    2020, // año de ingreso (int)
-                    null // Set<Subject> (opcional)
+                    "Dip Popich",
+                    "Bruno",
+                    39575877,
+                    Date.valueOf("1996-04-02"),
+                    c1,
+                    40,
+                    2020,
+                    null
             );
-            a1.addSubject(m1);                  // mantiene ambos lados
-            a1 = (Student) ss.merge(a1);         // idempotente por DNI
+            a1.addSubject(m1);
+            a1 = (Student) ss.merge(a1);
 
             tx.commit();
             System.out.println("Semilla ejecutada correctamente (idempotente).");
@@ -65,7 +60,6 @@ public class gestorFaculty {
         }
     }
 
-    // ----------------- Helpers Get-or-Create -----------------
     private static City getOrCreateCity(Session ss, String nombre) {
         City c = (City) ss.createQuery(
                 "from City c where c.nombre = :n")
@@ -98,14 +92,12 @@ public class gestorFaculty {
                 .setParameter("fid", fac.getIdFaculty())
                 .uniqueResult();
         if (c == null) {
-            // asegurate de tener el constructor (String, Faculty)
             c = new Career(nombre, fac);
             ss.save(c);
         }
         return c;
     }
 
-    // firma nueva: nombre, nivel, orden, profesor, carrera
     private static Subject getOrCreateSubject(Session ss, String nombre, int nivel,
             Integer orden, Professor prof, Career carr) {
         Subject m = (Subject) ss.createQuery(
@@ -118,10 +110,9 @@ public class gestorFaculty {
             m = new Subject(nombre, nivel, orden, prof, carr, null);
             ss.save(m);
         } else {
-            // idempotencia: si existe, actualizamos datos “volátiles”
             m.setNivel(nivel);
             m.setOrden(orden);
-            m.setProfessor(prof);   // puede ser null
+            m.setProfessor(prof);
             m.setCareer(carr);
             ss.merge(m);
         }

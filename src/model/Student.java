@@ -23,7 +23,6 @@ public class Student extends Person {
         }
     }
 
-    // Getters/Setters
     public Integer getNumLegajo() {
         return numLegajo;
     }

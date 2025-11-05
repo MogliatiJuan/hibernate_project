@@ -117,8 +117,6 @@ public class FacultyABM extends JFrame {
             }
             if (idCity != null && !idCity.trim().isEmpty()) {
                 if (facultyService instanceof HibernateFacultyService) {
-                    // Load City through a helper or directly
-                    // For now, we'll set it on the detached entity and let the service handle it
                     City c = new City();
                     c.setIdCity(Integer.parseInt(idCity.trim()));
                     f.setCity(c);

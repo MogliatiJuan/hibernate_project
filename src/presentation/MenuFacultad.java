@@ -18,21 +18,17 @@ public class MenuFacultad extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-        // System Look & Feel
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch (Exception ignored) {}
 
-        //  Layout  
         JPanel root = new JPanel(new BorderLayout(16, 16));
         root.setBorder(new EmptyBorder(18, 18, 18, 18));
         setContentPane(root);
 
-        // Header
         JLabel titulo = new JLabel("Faculty Management", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
         root.add(titulo, BorderLayout.NORTH);
 
-        // Entity buttons panel
-        JPanel grid = new JPanel(new GridLayout(3, 2, 12, 12));   // 3 rows x 2 columns, with generous spacing
+        JPanel grid = new JPanel(new GridLayout(3, 2, 12, 12));
         root.add(grid, BorderLayout.CENTER);
 
         JButton btnCiudad   = createButton("City",   'C', "City CRUD");
@@ -42,13 +38,12 @@ public class MenuFacultad extends JFrame {
         JButton btnMateria  = createButton("Subject",  'M', "Subject CRUD");
         JButton btnAlumno   = createButton("Student",   'A', "Student CRUD");
 
-        Dimension pref = new Dimension(160, 52); // uniform size
+        Dimension pref = new Dimension(160, 52);
         for (JButton b : new JButton[]{btnCiudad, btnFacultad, btnCarrera, btnProfesor, btnMateria, btnAlumno}) {
             b.setPreferredSize(pref);
             grid.add(b);
         }
 
-        // Footer with Exit button
         JPanel south = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         JButton btnSalir = new JButton("Exit");
         btnSalir.setMnemonic('E');
@@ -58,7 +53,6 @@ public class MenuFacultad extends JFrame {
         south.add(btnSalir);
         root.add(south, BorderLayout.SOUTH);
 
-        // Set actions
         btnCiudad.addActionListener(e -> openABM("City"));
         btnFacultad.addActionListener(e -> openABM("Faculty"));
         btnCarrera.addActionListener(e -> openABM("Career"));
@@ -67,7 +61,6 @@ public class MenuFacultad extends JFrame {
         btnAlumno.addActionListener(e -> openABM("Student"));
 
         pack();
-        // Fix width
         setSize(420, getHeight());
         setLocationRelativeTo(null);
     }
@@ -80,7 +73,6 @@ public class MenuFacultad extends JFrame {
         return b;
     }
 
-    /** Action selector and open corresponding ABM */
     private void openABM(String entity) {
     String[] ops = {"Create", "Update", "Delete", "List"};
     int i = JOptionPane.showOptionDialog(
@@ -91,7 +83,7 @@ public class MenuFacultad extends JFrame {
             JOptionPane.QUESTION_MESSAGE,
             null, ops, ops[0]);
 
-    if (i < 0) return; // cancelled
+    if (i < 0) return;
     String action = ops[i];
 
     JFrame frame = null;

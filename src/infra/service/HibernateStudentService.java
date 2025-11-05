@@ -62,7 +62,6 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
             Subject m = null;
             if (idSubject != null) {
                 m = (Subject) session.get(Subject.class, idSubject);
-                // If it doesn't exist, create without subject (no error thrown)
             }
             
             Student a = new Student(apellido.trim(), nombre.trim(), dni, fechaNac, c, numLegajo, anioIngreso, null);
@@ -96,8 +95,6 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
                 }
             }
             
-            // Update materias collection by syncing with the detached entity's materias
-            // This is simplified - in a real scenario you might want more sophisticated merging
             a.getSubjects().clear();
             if (alumno.getSubjects() != null) {
                 for (Subject m : alumno.getSubjects()) {

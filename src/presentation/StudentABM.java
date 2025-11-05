@@ -156,10 +156,8 @@ public class StudentABM extends JFrame {
                 a.setCity(c);
             }
             
-            // Apply changes first
             studentService.update(a);
             
-            // Then handle subject additions/removals
             if (addMateria != null && !addMateria.trim().isEmpty()) {
                 try {
                     studentService.addSubject(a.getDni(), Integer.parseInt(addMateria.trim()));
