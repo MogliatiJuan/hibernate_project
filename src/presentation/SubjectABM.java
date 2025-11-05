@@ -105,8 +105,8 @@ public class SubjectABM extends JFrame {
                     Integer.parseInt(idCareer.trim())
             );
 
-            out.append("✔ Subject created -> id=" + m.getIdSubject() + ", name=" + m.getNombre()
-                    + " | level=" + m.getNivel() + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null) + " | idCareer=" + m.getCareer().getIdCareer() + "\n");
+            out.append("✔ Subject created -> id=" + m.getIdSubject() + ", name=" + m.getName()
+                    + " | level=" + m.getLevel() + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null) + " | idCareer=" + m.getCareer().getIdCareer() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -134,20 +134,20 @@ public class SubjectABM extends JFrame {
             }
 
             Subject m = optSubject.get();
-            String nuevoNom = JOptionPane.showInputDialog(this, "New name:", m.getNombre());
-            String nivel = JOptionPane.showInputDialog(this, "New level (int):", String.valueOf(m.getNivel()));
-            String orden = JOptionPane.showInputDialog(this, "New order (int):", String.valueOf(m.getOrden() != null ? m.getOrden() : 0));
+            String nuevoNom = JOptionPane.showInputDialog(this, "New name:", m.getName());
+            String nivel = JOptionPane.showInputDialog(this, "New level (int):", String.valueOf(m.getLevel()));
+            String orden = JOptionPane.showInputDialog(this, "New order (int):", String.valueOf(m.getOrder() != null ? m.getOrder() : 0));
             String dniProf = JOptionPane.showInputDialog(this, "New professor DNI (Enter to keep):");
             String idCareer = JOptionPane.showInputDialog(this, "New idCareer (Enter to keep):");
 
             if (nuevoNom != null && !nuevoNom.trim().isEmpty()) {
-                m.setNombre(nuevoNom.trim());
+                m.setName(nuevoNom.trim());
             }
             if (nivel != null && !nivel.trim().isEmpty()) {
-                m.setNivel(Integer.parseInt(nivel.trim()));
+                m.setLevel(Integer.parseInt(nivel.trim()));
             }
             if (orden != null && !orden.trim().isEmpty()) {
-                m.setOrden(Integer.parseInt(orden.trim()));
+                m.setOrder(Integer.parseInt(orden.trim()));
             }
 
             if (dniProf != null && !dniProf.trim().isEmpty()) {
@@ -221,9 +221,9 @@ public class SubjectABM extends JFrame {
             } else {
                 for (Subject m : materias) {
                     out.append(" - id=" + m.getIdSubject()
-                            + " | " + m.getNombre()
-                            + " | level=" + m.getNivel()
-                            + " | order=" + m.getOrden()
+                            + " | " + m.getName()
+                            + " | level=" + m.getLevel()
+                            + " | order=" + m.getOrder()
                             + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null)
                             + " | idCareer=" + (m.getCareer() != null ? m.getCareer().getIdCareer() : null)
                             + "\n");
@@ -268,9 +268,9 @@ public class SubjectABM extends JFrame {
 
     private void appendSubjectLine(Subject m) {
         out.append(" - id=" + safeId(m.getIdSubject())
-                + " | " + safe(m.getNombre())
-                + " | level=" + safe(m.getNivel())
-                + " | order=" + safe(m.getOrden())
+                + " | " + safe(m.getName())
+                + " | level=" + safe(m.getLevel())
+                + " | order=" + safe(m.getOrder())
                 + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null)
                 + " | idCareer=" + (m.getCareer() != null ? m.getCareer().getIdCareer() : null)
                 + "\n");

@@ -78,7 +78,7 @@ public class CityABM extends JFrame {
         try {
             out.setText("");
             City c = cityService.create(nombre.trim());
-            out.append("✔ City created -> id=" + c.getIdCity() + ", name=" + c.getNombre() + "\n");
+            out.append("✔ City created -> id=" + c.getIdCity() + ", name=" + c.getName() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -106,13 +106,13 @@ public class CityABM extends JFrame {
             }
 
             City c = optCity.get();
-            String nuevo = JOptionPane.showInputDialog(this, "New name:", c.getNombre());
+            String nuevo = JOptionPane.showInputDialog(this, "New name:", c.getName());
             if (nuevo == null || nuevo.trim().isEmpty()) {
                 return;
             }
-            c.setNombre(nuevo.trim());
+            c.setName(nuevo.trim());
             cityService.update(c);
-            out.append("✔ City updated -> id=" + c.getIdCity() + ", name=" + c.getNombre() + "\n");
+            out.append("✔ City updated -> id=" + c.getIdCity() + ", name=" + c.getName() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -162,7 +162,7 @@ public class CityABM extends JFrame {
                 out.append("  (No cities yet)\n");
             } else {
                 for (City c : ciudades) {
-                    out.append(" - id=" + c.getIdCity() + " | " + c.getNombre() + "\n");
+                    out.append(" - id=" + c.getIdCity() + " | " + c.getName() + "\n");
                 }
             }
         } catch (Exception e) {

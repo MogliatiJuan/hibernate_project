@@ -84,7 +84,7 @@ public class CareerABM extends JFrame {
         try {
             out.setText("");
             Career c = careerService.create(nombre.trim(), Integer.parseInt(idFaculty.trim()));
-            out.append("✔ Career created -> id=" + c.getIdCareer() + ", name=" + c.getNombre()
+            out.append("✔ Career created -> id=" + c.getIdCareer() + ", name=" + c.getName()
                     + ", idFaculty=" + c.getFaculty().getIdFaculty() + "\n");
             refreshList();
         } catch (Exception e) {
@@ -113,11 +113,11 @@ public class CareerABM extends JFrame {
             }
 
             Career c = optCareer.get();
-            String nuevoNom = JOptionPane.showInputDialog(this, "New name:", c.getNombre());
+            String nuevoNom = JOptionPane.showInputDialog(this, "New name:", c.getName());
             String idFac = JOptionPane.showInputDialog(this, "New idFaculty (Enter to keep):");
 
             if (nuevoNom != null && !nuevoNom.trim().isEmpty()) {
-                c.setNombre(nuevoNom.trim());
+                c.setName(nuevoNom.trim());
             }
             if (idFac != null && !idFac.trim().isEmpty()) {
                 Faculty f = new Faculty();
@@ -126,7 +126,7 @@ public class CareerABM extends JFrame {
             }
 
             careerService.update(c);
-            out.append("✔ Career updated -> id=" + c.getIdCareer() + ", name=" + c.getNombre() + "\n");
+            out.append("✔ Career updated -> id=" + c.getIdCareer() + ", name=" + c.getName() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -176,7 +176,7 @@ public class CareerABM extends JFrame {
                 out.append("  (No careers yet)\n");
             } else {
                 for (Career c : carreras) {
-                    out.append(" - id=" + c.getIdCareer() + " | " + c.getNombre()
+                    out.append(" - id=" + c.getIdCareer() + " | " + c.getName()
                             + " | idFaculty=" + (c.getFaculty() != null ? c.getFaculty().getIdFaculty() : null) + "\n");
                 }
             }

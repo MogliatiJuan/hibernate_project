@@ -109,7 +109,7 @@ public class StudentABM extends JFrame {
                     Integer.parseInt(anioIng.trim()),
                     idMateriaInt
             );
-            out.append("✔ Student created -> dni=" + a.getDni() + " | student number=" + a.getNumLegajo() + "\n");
+            out.append("✔ Student created -> dni=" + a.getDni() + " | student number=" + a.getStudentNumber() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -138,17 +138,17 @@ public class StudentABM extends JFrame {
             }
 
             Student a = optStudent.get();
-            String legajo = JOptionPane.showInputDialog(this, "New student number:", String.valueOf(a.getNumLegajo()));
+            String legajo = JOptionPane.showInputDialog(this, "New student number:", String.valueOf(a.getStudentNumber()));
             String anioIng = JOptionPane.showInputDialog(this, "New enrollment year (int, Enter to keep):");
             String idCity = JOptionPane.showInputDialog(this, "New idCity (Enter to keep):");
             String addMateria = JOptionPane.showInputDialog(this, "Add idMateria (Enter to skip):");
             String delMateria = JOptionPane.showInputDialog(this, "Remove idMateria (Enter to skip):");
 
             if (legajo != null && !legajo.trim().isEmpty()) {
-                a.setNumLegajo(Integer.parseInt(legajo.trim()));
+                a.setStudentNumber(Integer.parseInt(legajo.trim()));
             }
             if (anioIng != null && !anioIng.trim().isEmpty()) {
-                a.setAnioIngreso(Integer.parseInt(anioIng.trim()));
+                a.setEnrollmentYear(Integer.parseInt(anioIng.trim()));
             }
             if (idCity != null && !idCity.trim().isEmpty()) {
                 City c = new City();
@@ -217,11 +217,11 @@ public class StudentABM extends JFrame {
             } else {
                 for (Student a : alumnos) {
                     out.append(" - dni=" + a.getDni()
-                            + " | " + a.getApellido() + ", " + a.getNombre()
-                            + " | student number=" + a.getNumLegajo()
-                            + " | enrollment year=" + a.getAnioIngreso()
+                            + " | " + a.getLastName() + ", " + a.getFirstName()
+                            + " | student number=" + a.getStudentNumber()
+                            + " | enrollment year=" + a.getEnrollmentYear()
                             + " | idCity=" + (a.getCity() != null ? a.getCity().getIdCity() : null)
-                            + " | subjects=" + (a.getMaterias() != null ? a.getMaterias().size() : 0)
+                            + " | subjects=" + (a.getSubjects() != null ? a.getSubjects().size() : 0)
                             + "\n");
                 }
             }

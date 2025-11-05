@@ -81,7 +81,7 @@ public class FacultyABM extends JFrame {
         try {
             out.setText("");
             Faculty f = facultyService.create(nombre.trim(), Integer.parseInt(idCity.trim()));
-            out.append("✔ Faculty created -> id=" + f.getIdFaculty() + ", name=" + f.getNombre() + ", idCity=" + f.getCity().getIdCity() + "\n");
+            out.append("✔ Faculty created -> id=" + f.getIdFaculty() + ", name=" + f.getName() + ", idCity=" + f.getCity().getIdCity() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -109,11 +109,11 @@ public class FacultyABM extends JFrame {
             }
 
             Faculty f = optFaculty.get();
-            String nuevoNom = JOptionPane.showInputDialog(this, "New name:", f.getNombre());
+            String nuevoNom = JOptionPane.showInputDialog(this, "New name:", f.getName());
             String idCity = JOptionPane.showInputDialog(this, "New idCity (Enter to keep):");
             
             if (nuevoNom != null && !nuevoNom.trim().isEmpty()) {
-                f.setNombre(nuevoNom.trim());
+                f.setName(nuevoNom.trim());
             }
             if (idCity != null && !idCity.trim().isEmpty()) {
                 if (facultyService instanceof HibernateFacultyService) {
@@ -124,7 +124,7 @@ public class FacultyABM extends JFrame {
             }
             
             facultyService.update(f);
-            out.append("✔ Faculty updated -> id=" + f.getIdFaculty() + ", name=" + f.getNombre() + "\n");
+            out.append("✔ Faculty updated -> id=" + f.getIdFaculty() + ", name=" + f.getName() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -174,7 +174,7 @@ public class FacultyABM extends JFrame {
                 out.append("  (No faculties yet)\n");
             } else {
                 for (Faculty f : facultades) {
-                    out.append(" - id=" + f.getIdFaculty() + " | " + f.getNombre()
+                    out.append(" - id=" + f.getIdFaculty() + " | " + f.getName()
                             + " | idCity=" + (f.getCity() != null ? f.getCity().getIdCity() : null) + "\n");
                 }
             }

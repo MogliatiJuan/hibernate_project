@@ -96,7 +96,7 @@ public class ProfessorABM extends JFrame {
                     Integer.parseInt(antig.trim()),
                     Integer.parseInt(idCity.trim())
             );
-            out.append("✔ Professor created -> dni=" + p.getDni() + ", " + p.getApellido() + ", " + p.getNombre() + "\n");
+            out.append("✔ Professor created -> dni=" + p.getDni() + ", " + p.getLastName() + ", " + p.getFirstName() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -125,11 +125,11 @@ public class ProfessorABM extends JFrame {
             }
 
             Professor p = optProfessor.get();
-            String antig = JOptionPane.showInputDialog(this, "New seniority:", String.valueOf(p.getAntiguedad()));
+            String antig = JOptionPane.showInputDialog(this, "New seniority:", String.valueOf(p.getSeniority()));
             String idCity = JOptionPane.showInputDialog(this, "New idCity (Enter to keep):");
 
             if (antig != null && !antig.trim().isEmpty()) {
-                p.setAntiguedad(Integer.parseInt(antig.trim()));
+                p.setSeniority(Integer.parseInt(antig.trim()));
             }
             if (idCity != null && !idCity.trim().isEmpty()) {
                 City c = new City();
@@ -181,8 +181,8 @@ public class ProfessorABM extends JFrame {
                 out.append("  (No professors yet)\n");
             } else {
                 for (Professor p : profesores) {
-                    out.append(" - dni=" + p.getDni() + " | " + p.getApellido() + ", " + p.getNombre()
-                            + " | seniority=" + p.getAntiguedad()
+                    out.append(" - dni=" + p.getDni() + " | " + p.getLastName() + ", " + p.getFirstName()
+                            + " | seniority=" + p.getSeniority()
                             + " | idCity=" + (p.getCity() != null ? p.getCity().getIdCity() : null) + "\n");
                 }
             }

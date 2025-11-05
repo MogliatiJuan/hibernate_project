@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 
 import java.sql.Date;
 
-public class gestorFaculty {
+public class gestorFacultad {
 
     public static void main(String[] args) {
         Session ss = HibernateUtil.getSF().openSession();
@@ -62,7 +62,7 @@ public class gestorFaculty {
 
     private static City getOrCreateCity(Session ss, String nombre) {
         City c = (City) ss.createQuery(
-                "from City c where c.nombre = :n")
+                "from City c where c.name = :n")
                 .setParameter("n", nombre)
                 .uniqueResult();
         if (c == null) {
@@ -74,7 +74,7 @@ public class gestorFaculty {
 
     private static Faculty getOrCreateFaculty(Session ss, String nombre, City ciudad) {
         Faculty f = (Faculty) ss.createQuery(
-                "from Faculty f where f.nombre = :n and f.ciudad.idCity = :cid")
+                "from Faculty f where f.name = :n and f.city.idCity = :cid")
                 .setParameter("n", nombre)
                 .setParameter("cid", ciudad.getIdCity())
                 .uniqueResult();
@@ -87,7 +87,7 @@ public class gestorFaculty {
 
     private static Career getOrCreateCareer(Session ss, String nombre, Faculty fac) {
         Career c = (Career) ss.createQuery(
-                "from Career c where c.nombre = :n and c.facultad.idFaculty = :fid")
+                "from Career c where c.name = :n and c.faculty.idFaculty = :fid")
                 .setParameter("n", nombre)
                 .setParameter("fid", fac.getIdFaculty())
                 .uniqueResult();
@@ -101,7 +101,7 @@ public class gestorFaculty {
     private static Subject getOrCreateSubject(Session ss, String nombre, int nivel,
             Integer orden, Professor prof, Career carr) {
         Subject m = (Subject) ss.createQuery(
-                "from Subject m where m.nombre = :n and m.carrera.idCareer = :cid")
+                "from Subject m where m.name = :n and m.career.idCareer = :cid")
                 .setParameter("n", nombre)
                 .setParameter("cid", carr.getIdCareer())
                 .uniqueResult();
@@ -110,8 +110,8 @@ public class gestorFaculty {
             m = new Subject(nombre, nivel, orden, prof, carr, null);
             ss.save(m);
         } else {
-            m.setNivel(nivel);
-            m.setOrden(orden);
+            m.setLevel(nivel);
+            m.setOrder(orden);
             m.setProfessor(prof);
             m.setCareer(carr);
             ss.merge(m);
