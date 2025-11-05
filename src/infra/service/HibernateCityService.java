@@ -27,12 +27,12 @@ public class HibernateCityService extends BaseHibernateService implements CitySe
     }
 
     @Override
-    public Optional<City> findByName(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
+    public Optional<City> findByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<City> list = createQuery(session, "from City c where c.nombre = :n", "n", nombre.trim(), City.class);
+            List<City> list = createQuery(session, "from City c where c.name = :n", "n", name.trim(), City.class);
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -41,44 +41,44 @@ public class HibernateCityService extends BaseHibernateService implements CitySe
     }
 
     @Override
-    public City create(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
+    public City create(String name) {
+        if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name is required");
         }
         
         return executeInTransaction(session -> {
-            City c = new City(nombre.trim());
+            City c = new City(name.trim());
             session.persist(c);
             return c;
         });
     }
 
     @Override
-    public void update(City ciudad) {
-        if (ciudad == null || ciudad.getIdCity() == null) {
+    public void update(City city) {
+        if (city == null || city.getIdCity() == null) {
             throw new IllegalArgumentException("City cannot be null and must have idCity");
         }
         
         executeInTransaction(session -> {
-            City c = (City) session.get(City.class, ciudad.getIdCity());
+            City c = (City) session.get(City.class, city.getIdCity());
             if (c == null) {
-                throw new IllegalArgumentException("City not found with id: " + ciudad.getIdCity());
+                throw new IllegalArgumentException("City not found with id: " + city.getIdCity());
             }
             
-            c.setNombre(ciudad.getNombre());
+            c.setName(city.getName());
             session.update(c);
             return null;
         });
     }
 
     @Override
-    public void delete(City ciudad) {
-        if (ciudad == null) {
+    public void delete(City city) {
+        if (city == null) {
             throw new IllegalArgumentException("City cannot be null");
         }
         
         executeInTransaction(session -> {
-            City c = (City) session.get(City.class, ciudad.getIdCity());
+            City c = (City) session.get(City.class, city.getIdCity());
             if (c != null) {
                 session.delete(c);
             }

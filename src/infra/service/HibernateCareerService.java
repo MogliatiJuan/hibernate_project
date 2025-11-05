@@ -28,12 +28,12 @@ public class HibernateCareerService extends BaseHibernateService implements Care
     }
 
     @Override
-    public Optional<Career> findByName(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
+    public Optional<Career> findByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<Career> list = createQuery(session, "from Career c where c.nombre = :n", "n", nombre.trim(), Career.class);
+            List<Career> list = createQuery(session, "from Career c where c.name = :n", "n", name.trim(), Career.class);
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -42,8 +42,8 @@ public class HibernateCareerService extends BaseHibernateService implements Care
     }
 
     @Override
-    public Career create(String nombre, Integer idFaculty) {
-        if (nombre == null || idFaculty == null) {
+    public Career create(String name, Integer idFaculty) {
+        if (name == null || idFaculty == null) {
             throw new IllegalArgumentException("Name and idFaculty are required");
         }
         
@@ -53,27 +53,27 @@ public class HibernateCareerService extends BaseHibernateService implements Care
                 throw new IllegalArgumentException("Faculty does not exist with id: " + idFaculty);
             }
             
-            Career c = new Career(nombre.trim(), f);
+            Career c = new Career(name.trim(), f);
             session.persist(c);
             return c;
         });
     }
 
     @Override
-    public void update(Career carrera) {
-        if (carrera == null || carrera.getIdCareer() == null) {
+    public void update(Career career) {
+        if (career == null || career.getIdCareer() == null) {
             throw new IllegalArgumentException("Career cannot be null and must have idCareer");
         }
         
         executeInTransaction(session -> {
-            Career c = (Career) session.get(Career.class, carrera.getIdCareer());
+            Career c = (Career) session.get(Career.class, career.getIdCareer());
             if (c == null) {
-                throw new IllegalArgumentException("Career not found with id: " + carrera.getIdCareer());
+                throw new IllegalArgumentException("Career not found with id: " + career.getIdCareer());
             }
             
-            c.setNombre(carrera.getNombre());
-            if (carrera.getFaculty() != null) {
-                Faculty f = (Faculty) session.get(Faculty.class, carrera.getFaculty().getIdFaculty());
+            c.setName(career.getName());
+            if (career.getFaculty() != null) {
+                Faculty f = (Faculty) session.get(Faculty.class, career.getFaculty().getIdFaculty());
                 if (f != null) {
                     c.setFaculty(f);
                 }
@@ -85,13 +85,13 @@ public class HibernateCareerService extends BaseHibernateService implements Care
     }
 
     @Override
-    public void delete(Career carrera) {
-        if (carrera == null) {
+    public void delete(Career career) {
+        if (career == null) {
             throw new IllegalArgumentException("Career cannot be null");
         }
         
         executeInTransaction(session -> {
-            Career c = (Career) session.get(Career.class, carrera.getIdCareer());
+            Career c = (Career) session.get(Career.class, career.getIdCareer());
             if (c != null) {
                 session.delete(c);
             }

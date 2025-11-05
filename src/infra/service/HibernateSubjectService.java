@@ -18,14 +18,14 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
     }
 
     @Override
-    public List<Subject> listByLevel(int nivel) {
+    public List<Subject> listByLevel(int level) {
         return executeInSession(session -> {
             org.hibernate.Query q = session.createQuery(
                     "from Subject m " +
-                    "where m.nivel = :n " +
-                    "order by m.orden asc, m.idSubject asc"
+                    "where m.level = :n " +
+                    "order by m.order asc, m.idSubject asc"
             );
-            q.setInteger("n", nivel);
+            q.setInteger("n", level);
             @SuppressWarnings("unchecked")
             List<Subject> list = q.list();
             return list;
@@ -44,12 +44,12 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
     }
 
     @Override
-    public Optional<Subject> findByName(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
+    public Optional<Subject> findByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<Subject> list = createQuery(session, "from Subject m where m.nombre = :n", "n", nombre.trim(), Subject.class);
+            List<Subject> list = createQuery(session, "from Subject m where m.name = :n", "n", name.trim(), Subject.class);
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -58,8 +58,8 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
     }
 
     @Override
-    public Subject create(String nombre, Integer nivel, Integer orden, Integer dniProfessor, Integer idCareer) {
-        if (nombre == null || nivel == null || orden == null || idCareer == null) {
+    public Subject create(String name, Integer level, Integer order, Integer dniProfessor, Integer idCareer) {
+        if (name == null || level == null || order == null || idCareer == null) {
             throw new IllegalArgumentException("Name, level, order and idCareer are required");
         }
         
@@ -75,9 +75,9 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
             }
 
             Subject m = new Subject(
-                    nombre.trim(),
-                    nivel,
-                    orden,
+                    name.trim(),
+                    level,
+                    order,
                     p,
                     c,
                     null
@@ -89,32 +89,32 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
     }
 
     @Override
-    public void update(Subject materia) {
-        if (materia == null || materia.getIdSubject() == null) {
+    public void update(Subject subject) {
+        if (subject == null || subject.getIdSubject() == null) {
             throw new IllegalArgumentException("Subject cannot be null and must have idSubject");
         }
         
         executeInTransaction(session -> {
-            Subject m = (Subject) session.get(Subject.class, materia.getIdSubject());
+            Subject m = (Subject) session.get(Subject.class, subject.getIdSubject());
             if (m == null) {
-                throw new IllegalArgumentException("Subject not found with id: " + materia.getIdSubject());
+                throw new IllegalArgumentException("Subject not found with id: " + subject.getIdSubject());
             }
             
-            m.setNombre(materia.getNombre());
-            m.setNivel(materia.getNivel());
-            m.setOrden(materia.getOrden());
+            m.setName(subject.getName());
+            m.setLevel(subject.getLevel());
+            m.setOrder(subject.getOrder());
             
-            if (materia.getProfessor() != null) {
-                Professor p = (Professor) session.get(Professor.class, materia.getProfessor().getDni());
+            if (subject.getProfessor() != null) {
+                Professor p = (Professor) session.get(Professor.class, subject.getProfessor().getDni());
                 m.setProfessor(p);
             } else {
                 m.setProfessor(null);
             }
             
-            if (materia.getCareer() != null) {
-                Career c = (Career) session.get(Career.class, materia.getCareer().getIdCareer());
+            if (subject.getCareer() != null) {
+                Career c = (Career) session.get(Career.class, subject.getCareer().getIdCareer());
                 if (c == null) {
-                    throw new IllegalArgumentException("Career not found with id: " + materia.getCareer().getIdCareer());
+                    throw new IllegalArgumentException("Career not found with id: " + subject.getCareer().getIdCareer());
                 }
                 m.setCareer(c);
             } else {
@@ -127,13 +127,13 @@ public class HibernateSubjectService extends BaseHibernateService implements Sub
     }
 
     @Override
-    public void delete(Subject materia) {
-        if (materia == null) {
+    public void delete(Subject subject) {
+        if (subject == null) {
             throw new IllegalArgumentException("Subject cannot be null");
         }
         
         executeInTransaction(session -> {
-            Subject m = (Subject) session.get(Subject.class, materia.getIdSubject());
+            Subject m = (Subject) session.get(Subject.class, subject.getIdSubject());
             if (m != null) {
                 session.delete(m);
             }

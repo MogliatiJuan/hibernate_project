@@ -14,7 +14,7 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     @Override
     public List<Student> list() {
         return executeInSession(session -> {
-            return createQuery(session, "from Student a order by a.apellido, a.nombre", Student.class);
+            return createQuery(session, "from Student a order by a.lastName, a.firstName", Student.class);
         });
     }
 
@@ -30,16 +30,16 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public Optional<Student> findByLastNameAndFirstName(String apellido, String nombre) {
-        if (apellido == null || nombre == null || apellido.trim().isEmpty() || nombre.trim().isEmpty()) {
+    public Optional<Student> findByLastNameAndFirstName(String lastName, String firstName) {
+        if (lastName == null || firstName == null || lastName.trim().isEmpty() || firstName.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
             List<Student> list = createQueryWithParams(session,
-                "from Student a where a.apellido = :a and a.nombre = :n",
+                "from Student a where a.lastName = :a and a.firstName = :n",
                 Student.class,
-                "a", apellido.trim(),
-                "n", nombre.trim());
+                "a", lastName.trim(),
+                "n", firstName.trim());
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -48,9 +48,9 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public Student create(String apellido, String nombre, Integer dni, Date fechaNac, Integer idCity, Integer numLegajo, Integer anioIngreso, Integer idSubject) {
-        if (apellido == null || nombre == null || dni == null || idCity == null || numLegajo == null || anioIngreso == null) {
-            throw new IllegalArgumentException("Last name, first name, DNI, idCity, numLegajo and anioIngreso are required");
+    public Student create(String lastName, String firstName, Integer dni, Date birthDate, Integer idCity, Integer studentNumber, Integer enrollmentYear, Integer idSubject) {
+        if (lastName == null || firstName == null || dni == null || idCity == null || studentNumber == null || enrollmentYear == null) {
+            throw new IllegalArgumentException("Last name, first name, DNI, idCity, studentNumber and enrollmentYear are required");
         }
         
         return executeInTransaction(session -> {
@@ -64,7 +64,7 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
                 m = (Subject) session.get(Subject.class, idSubject);
             }
             
-            Student a = new Student(apellido.trim(), nombre.trim(), dni, fechaNac, c, numLegajo, anioIngreso, null);
+            Student a = new Student(lastName.trim(), firstName.trim(), dni, birthDate, c, studentNumber, enrollmentYear, null);
             if (m != null) {
                 a.addSubject(m);
             }
@@ -75,29 +75,29 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public void update(Student alumno) {
-        if (alumno == null || alumno.getDni() == null) {
+    public void update(Student student) {
+        if (student == null || student.getDni() == null) {
             throw new IllegalArgumentException("Student cannot be null and must have DNI");
         }
         
         executeInTransaction(session -> {
-            Student a = (Student) session.get(Student.class, alumno.getDni());
+            Student a = (Student) session.get(Student.class, student.getDni());
             if (a == null) {
-                throw new IllegalArgumentException("Student not found with DNI: " + alumno.getDni());
+                throw new IllegalArgumentException("Student not found with DNI: " + student.getDni());
             }
             
-            a.setNumLegajo(alumno.getNumLegajo());
-            a.setAnioIngreso(alumno.getAnioIngreso());
-            if (alumno.getCity() != null) {
-                City c = (City) session.get(City.class, alumno.getCity().getIdCity());
+            a.setStudentNumber(student.getStudentNumber());
+            a.setEnrollmentYear(student.getEnrollmentYear());
+            if (student.getCity() != null) {
+                City c = (City) session.get(City.class, student.getCity().getIdCity());
                 if (c != null) {
                     a.setCity(c);
                 }
             }
             
             a.getSubjects().clear();
-            if (alumno.getSubjects() != null) {
-                for (Subject m : alumno.getSubjects()) {
+            if (student.getSubjects() != null) {
+                for (Subject m : student.getSubjects()) {
                     Subject materiaAttached = (Subject) session.get(Subject.class, m.getIdSubject());
                     if (materiaAttached != null) {
                         a.addSubject(materiaAttached);
@@ -111,13 +111,13 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public void delete(Student alumno) {
-        if (alumno == null) {
+    public void delete(Student student) {
+        if (student == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
         
         executeInTransaction(session -> {
-            Student a = (Student) session.get(Student.class, alumno.getDni());
+            Student a = (Student) session.get(Student.class, student.getDni());
             if (a != null) {
                 session.delete(a);
             }
