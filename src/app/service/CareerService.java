@@ -1,19 +1,19 @@
 package app.service;
 
-import model.Carrera;
+import model.Career;
 import java.util.List;
 import java.util.Optional;
 
 public interface CareerService {
-    List<Carrera> list();
+    List<Career> list();
     
-    Optional<Carrera> findById(Integer id);
+    Optional<Career> findById(Integer id);
     
-    Optional<Carrera> findByName(String nombre);
+    Optional<Career> findByName(String nombre);
     
-    Carrera create(String nombre, Integer idFacultad);
+    Career create(String nombre, Integer idFacultad);
     
-    void update(Carrera carrera);
+    void update(Career carrera);
     
-    void delete(Carrera carrera);
+    void delete(Career carrera);
 }

@@ -1,19 +1,19 @@
 package app.service;
 
-import model.Ciudad;
+import model.City;
 import java.util.List;
 import java.util.Optional;
 
 public interface CityService {
-    List<Ciudad> list();
+    List<City> list();
     
-    Optional<Ciudad> findById(Integer id);
+    Optional<City> findById(Integer id);
     
-    Optional<Ciudad> findByName(String nombre);
+    Optional<City> findByName(String nombre);
     
-    Ciudad create(String nombre);
+    City create(String nombre);
     
-    void update(Ciudad ciudad);
+    void update(City ciudad);
     
-    void delete(Ciudad ciudad);
+    void delete(City ciudad);
 }

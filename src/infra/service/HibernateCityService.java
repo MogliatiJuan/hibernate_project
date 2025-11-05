@@ -1,7 +1,7 @@
 package infra.service;
 
 import app.service.CityService;
-import model.Ciudad;
+import model.City;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,30 +9,30 @@ import java.util.Optional;
 public class HibernateCityService extends BaseHibernateService implements CityService {
 
     @Override
-    public List<Ciudad> list() {
+    public List<City> list() {
         return executeInSession(session -> {
-            return createQuery(session, "from Ciudad order by idCiudad", Ciudad.class);
+            return createQuery(session, "from City order by idCity", City.class);
         });
     }
 
     @Override
-    public Optional<Ciudad> findById(Integer id) {
+    public Optional<City> findById(Integer id) {
         if (id == null) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            Ciudad c = (Ciudad) session.get(Ciudad.class, id);
+            City c = (City) session.get(City.class, id);
             return Optional.ofNullable(c);
         });
     }
 
     @Override
-    public Optional<Ciudad> findByName(String nombre) {
+    public Optional<City> findByName(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<Ciudad> list = createQuery(session, "from Ciudad c where c.nombre = :n", "n", nombre.trim(), Ciudad.class);
+            List<City> list = createQuery(session, "from City c where c.nombre = :n", "n", nombre.trim(), City.class);
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -41,28 +41,28 @@ public class HibernateCityService extends BaseHibernateService implements CitySe
     }
 
     @Override
-    public Ciudad create(String nombre) {
+    public City create(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("Name is required");
         }
         
         return executeInTransaction(session -> {
-            Ciudad c = new Ciudad(nombre.trim());
+            City c = new City(nombre.trim());
             session.persist(c);
             return c;
         });
     }
 
     @Override
-    public void update(Ciudad ciudad) {
-        if (ciudad == null || ciudad.getIdCiudad() == null) {
-            throw new IllegalArgumentException("City cannot be null and must have idCiudad");
+    public void update(City ciudad) {
+        if (ciudad == null || ciudad.getIdCity() == null) {
+            throw new IllegalArgumentException("City cannot be null and must have idCity");
         }
         
         executeInTransaction(session -> {
-            Ciudad c = (Ciudad) session.get(Ciudad.class, ciudad.getIdCiudad());
+            City c = (City) session.get(City.class, ciudad.getIdCity());
             if (c == null) {
-                throw new IllegalArgumentException("City not found with id: " + ciudad.getIdCiudad());
+                throw new IllegalArgumentException("City not found with id: " + ciudad.getIdCity());
             }
             
             c.setNombre(ciudad.getNombre());
@@ -72,13 +72,13 @@ public class HibernateCityService extends BaseHibernateService implements CitySe
     }
 
     @Override
-    public void delete(Ciudad ciudad) {
+    public void delete(City ciudad) {
         if (ciudad == null) {
             throw new IllegalArgumentException("City cannot be null");
         }
         
         executeInTransaction(session -> {
-            Ciudad c = (Ciudad) session.get(Ciudad.class, ciudad.getIdCiudad());
+            City c = (City) session.get(City.class, ciudad.getIdCity());
             if (c != null) {
                 session.delete(c);
             }

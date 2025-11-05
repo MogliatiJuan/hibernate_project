@@ -2,8 +2,8 @@ package presentation;
 
 import app.service.FacultyService;
 import infra.service.HibernateFacultyService;
-import model.Ciudad;
-import model.Facultad;
+import model.City;
+import model.Faculty;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,15 +73,15 @@ public class FacultyABM extends JFrame {
 
     private void create() {
         String nombre = JOptionPane.showInputDialog(this, "Faculty name:");
-        String idCiudad = JOptionPane.showInputDialog(this, "idCiudad:");
-        if (nombre == null || idCiudad == null) {
+        String idCity = JOptionPane.showInputDialog(this, "idCity:");
+        if (nombre == null || idCity == null) {
             return;
         }
 
         try {
             out.setText("");
-            Facultad f = facultyService.create(nombre.trim(), Integer.parseInt(idCiudad.trim()));
-            out.append("✔ Faculty created -> id=" + f.getIdFacultad() + ", name=" + f.getNombre() + ", idCiudad=" + f.getCiudad().getIdCiudad() + "\n");
+            Faculty f = facultyService.create(nombre.trim(), Integer.parseInt(idCity.trim()));
+            out.append("✔ Faculty created -> id=" + f.getIdFaculty() + ", name=" + f.getNombre() + ", idCity=" + f.getCity().getIdCity() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -89,44 +89,44 @@ public class FacultyABM extends JFrame {
     }
 
     private void update() {
-        String idStr = JOptionPane.showInputDialog(this, "idFacultad (Enter to search by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idFaculty (Enter to search by name):");
         try {
             out.setText("");
-            Optional<Facultad> optFacultad;
+            Optional<Faculty> optFaculty;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optFacultad = facultyService.findById(Integer.parseInt(idStr.trim()));
+                optFaculty = facultyService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to update:");
                 if (nombre == null) {
                     return;
                 }
-                optFacultad = facultyService.findByName(nombre.trim());
+                optFaculty = facultyService.findByName(nombre.trim());
             }
             
-            if (!optFacultad.isPresent()) {
+            if (!optFaculty.isPresent()) {
                 out.append("✖ Faculty does not exist\n");
                 return;
             }
 
-            Facultad f = optFacultad.get();
+            Faculty f = optFaculty.get();
             String nuevoNom = JOptionPane.showInputDialog(this, "New name:", f.getNombre());
-            String idCiudad = JOptionPane.showInputDialog(this, "New idCiudad (Enter to keep):");
+            String idCity = JOptionPane.showInputDialog(this, "New idCity (Enter to keep):");
             
             if (nuevoNom != null && !nuevoNom.trim().isEmpty()) {
                 f.setNombre(nuevoNom.trim());
             }
-            if (idCiudad != null && !idCiudad.trim().isEmpty()) {
+            if (idCity != null && !idCity.trim().isEmpty()) {
                 if (facultyService instanceof HibernateFacultyService) {
-                    // Load Ciudad through a helper or directly
+                    // Load City through a helper or directly
                     // For now, we'll set it on the detached entity and let the service handle it
-                    Ciudad c = new Ciudad();
-                    c.setIdCiudad(Integer.parseInt(idCiudad.trim()));
-                    f.setCiudad(c);
+                    City c = new City();
+                    c.setIdCity(Integer.parseInt(idCity.trim()));
+                    f.setCity(c);
                 }
             }
             
             facultyService.update(f);
-            out.append("✔ Faculty updated -> id=" + f.getIdFacultad() + ", name=" + f.getNombre() + "\n");
+            out.append("✔ Faculty updated -> id=" + f.getIdFaculty() + ", name=" + f.getNombre() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -134,28 +134,28 @@ public class FacultyABM extends JFrame {
     }
 
     private void delete() {
-        String idStr = JOptionPane.showInputDialog(this, "idFacultad (Enter to delete by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idFaculty (Enter to delete by name):");
         try {
             out.setText("");
-            Optional<Facultad> optFacultad;
+            Optional<Faculty> optFaculty;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optFacultad = facultyService.findById(Integer.parseInt(idStr.trim()));
+                optFaculty = facultyService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to delete:");
                 if (nombre == null) {
                     return;
                 }
-                optFacultad = facultyService.findByName(nombre.trim());
+                optFaculty = facultyService.findByName(nombre.trim());
             }
             
-            if (!optFacultad.isPresent()) {
+            if (!optFaculty.isPresent()) {
                 out.append("✖ Faculty does not exist\n");
                 return;
             }
             
-            Facultad f = optFacultad.get();
+            Faculty f = optFaculty.get();
             facultyService.delete(f);
-            out.append("✔ Faculty deleted -> id=" + f.getIdFacultad() + "\n");
+            out.append("✔ Faculty deleted -> id=" + f.getIdFaculty() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
@@ -169,15 +169,15 @@ public class FacultyABM extends JFrame {
     private void refreshList() {
         try {
             out.setText("");
-            List<Facultad> facultades = facultyService.list();
+            List<Faculty> facultades = facultyService.list();
             out.append("FACULTIES:\n");
 
             if (facultades.isEmpty()) {
                 out.append("  (No faculties yet)\n");
             } else {
-                for (Facultad f : facultades) {
-                    out.append(" - id=" + f.getIdFacultad() + " | " + f.getNombre()
-                            + " | idCiudad=" + (f.getCiudad() != null ? f.getCiudad().getIdCiudad() : null) + "\n");
+                for (Faculty f : facultades) {
+                    out.append(" - id=" + f.getIdFaculty() + " | " + f.getNombre()
+                            + " | idCity=" + (f.getCity() != null ? f.getCity().getIdCity() : null) + "\n");
                 }
             }
         } catch (Exception e) {

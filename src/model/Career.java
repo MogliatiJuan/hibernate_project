@@ -3,17 +3,17 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carrera {
+public class Career {
 
     private Integer idCarrera;
     private String nombre;
-    private Facultad facultad;
-    private List<Materia> materias = new ArrayList<>();
+    private Faculty facultad;
+    private List<Subject> materias = new ArrayList<>();
 
-    public Carrera() {
+    public Career() {
     }
 
-    public Carrera(String nombre, Facultad facultad, List<Materia> materias) {
+    public Career(String nombre, Faculty facultad, List<Subject> materias) {
         this.nombre = nombre;
         this.facultad = facultad;
         if (materias != null) {
@@ -21,7 +21,7 @@ public class Carrera {
         }
     }
 
-    public Carrera(String nombre, Facultad facultad) {
+    public Career(String nombre, Faculty facultad) {
         this.nombre = nombre;
         this.facultad = facultad;
         this.materias = new ArrayList<>();
@@ -44,25 +44,25 @@ public class Carrera {
         this.nombre = nombre;
     }
 
-    public Facultad getFacultad() {
+    public Faculty getFacultad() {
         return facultad;
     }
 
-    public void setFacultad(Facultad facultad) {
+    public void setFacultad(Faculty facultad) {
         this.facultad = facultad;
     }
 
-    public List<Materia> getMaterias() {
+    public List<Subject> getMaterias() {
         return materias;
     }
 
-    public void setMaterias(List<Materia> materias) {
+    public void setMaterias(List<Subject> materias) {
         this.materias = materias;
     }
 
     @Override
     public String toString() {
-        return "Carrera{"
+        return "Career{"
                 + "idCarrera=" + idCarrera
                 + ", nombre='" + nombre + '\''
                 + ", facultad=" + (facultad != null ? facultad.getNombre() : "null")
@@ -70,3 +70,4 @@ public class Carrera {
                 + '}';
     }
 }
+

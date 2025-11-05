@@ -4,7 +4,7 @@
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.Persona" table="persona">
+    <class name="model.Person" table="persona">
         <id name="dni" column="dni" type="int">
             <generator class="assigned"/>
         </id>
@@ -13,10 +13,10 @@
         <property name="nombre"   column="nombre"   type="string" not-null="true"/>
         <property name="fechaNac" column="fechaNac" type="date"/>
 
-        <many-to-one name="ciudad" class="model.Ciudad" column="idCiudad"  lazy="proxy" not-null="true" cascade="save-update"/>
+        <many-to-one name="ciudad" class="model.City" column="idCiudad"  lazy="proxy" not-null="true" cascade="save-update"/>
 
     
-        <joined-subclass name="model.Alumno" table="alumno">
+        <joined-subclass name="model.Student" table="alumno">
             <key column="dni"/>
 
             <property name="numLegajo"   column="numLegajo"   type="int"  not-null="true" unique="true"/>
@@ -24,51 +24,51 @@
 
             <set name="materias" table="materia_alumno" lazy="true">
                 <key column="dniAlumno"/>
-                <many-to-many class="model.Materia" column="idMateria"/>
+                <many-to-many class="model.Subject" column="idMateria"/>
             </set>
         </joined-subclass>
 
 
-        <joined-subclass name="model.Profesor" table="profesor">
+        <joined-subclass name="model.Professor" table="profesor">
             <key column="dni"/>
             <property name="antiguedad" type="int"/>
         </joined-subclass>
     </class>
 
-    <class name="model.Ciudad" table="ciudad">
+    <class name="model.City" table="ciudad">
         <id name="idCiudad" column="idCiudad" type="int" >
             <generator class="identity"/>
         </id>
         <property name="nombre" column="nombre" type="string" not-null="true"/>
     </class>
 
-    <class name="model.Facultad" table="facultad">
+    <class name="model.Faculty" table="facultad">
         <id name="idFacultad" column="idFacultad" type="int">
             <generator class="identity"/>
         </id>
         <property name="nombre" column="nombre" type="string" not-null="true"/>
-        <many-to-one name="ciudad" class="model.Ciudad" column="idCiudad" not-null="true"  cascade="save-update"/>
+        <many-to-one name="ciudad" class="model.City" column="idCiudad" not-null="true"  cascade="save-update"/>
     </class>
 
-    <class name="model.Carrera" table="carrera">
+    <class name="model.Career" table="carrera">
         <id name="idCarrera" column="idCarrera" type="int">
             <generator class="identity"/>
         </id>
         <property name="nombre" column="nombre" type="string" not-null="true"/>
 
     
-        <many-to-one name="facultad" class="model.Facultad" column="idFacultad" not-null="true" cascade="save-update"/>
+        <many-to-one name="facultad" class="model.Faculty" column="idFacultad" not-null="true" cascade="save-update"/>
 
     
         <list name="materias" inverse="true" lazy="true" cascade="all-delete-orphan">
             <key column="idCarrera"/>
             <index column="orden"/>
-            <one-to-many class="model.Materia"/>
+            <one-to-many class="model.Subject"/>
         </list>
     </class>
 
   
-    <class name="model.Materia" table="materia">
+    <class name="model.Subject" table="materia">
         <id name="idMateria" column="idMateria" type="int">
             <generator class="identity"/>
         </id>
@@ -76,13 +76,13 @@
         <property name="nivel"  column="nivel"  type="int" not-null="true"/>
         <property name="orden"  column="orden"  type="int"/>
 
-        <many-to-one name="profesor" class="model.Profesor" column="dniProfesor" lazy="proxy"/>
-        <many-to-one name="carrera"  class="model.Carrera"  column="idCarrera" not-null="true" lazy="proxy"/>
+        <many-to-one name="profesor" class="model.Professor" column="dniProfesor" lazy="proxy"/>
+        <many-to-one name="carrera"  class="model.Career"  column="idCarrera" not-null="true" lazy="proxy"/>
 
     
         <set name="alumnos" table="materia_alumno" inverse="true" lazy="true">
             <key column="idMateria"/>
-            <many-to-many class="model.Alumno" column="dniAlumno"/>
+            <many-to-many class="model.Student" column="dniAlumno"/>
         </set>
 
     </class>

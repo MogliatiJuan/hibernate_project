@@ -1,8 +1,8 @@
 package infra.service;
 
 import app.service.CareerService;
-import model.Carrera;
-import model.Facultad;
+import model.Career;
+import model.Faculty;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,30 +10,30 @@ import java.util.Optional;
 public class HibernateCareerService extends BaseHibernateService implements CareerService {
 
     @Override
-    public List<Carrera> list() {
+    public List<Career> list() {
         return executeInSession(session -> {
-            return createQuery(session, "from Carrera c order by c.idCarrera", Carrera.class);
+            return createQuery(session, "from Career c order by c.idCareer", Career.class);
         });
     }
 
     @Override
-    public Optional<Carrera> findById(Integer id) {
+    public Optional<Career> findById(Integer id) {
         if (id == null) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            Carrera c = (Carrera) session.get(Carrera.class, id);
+            Career c = (Career) session.get(Career.class, id);
             return Optional.ofNullable(c);
         });
     }
 
     @Override
-    public Optional<Carrera> findByName(String nombre) {
+    public Optional<Career> findByName(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<Carrera> list = createQuery(session, "from Carrera c where c.nombre = :n", "n", nombre.trim(), Carrera.class);
+            List<Career> list = createQuery(session, "from Career c where c.nombre = :n", "n", nombre.trim(), Career.class);
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -42,40 +42,40 @@ public class HibernateCareerService extends BaseHibernateService implements Care
     }
 
     @Override
-    public Carrera create(String nombre, Integer idFacultad) {
-        if (nombre == null || idFacultad == null) {
-            throw new IllegalArgumentException("Name and idFacultad are required");
+    public Career create(String nombre, Integer idFaculty) {
+        if (nombre == null || idFaculty == null) {
+            throw new IllegalArgumentException("Name and idFaculty are required");
         }
         
         return executeInTransaction(session -> {
-            Facultad f = (Facultad) session.get(Facultad.class, idFacultad);
+            Faculty f = (Faculty) session.get(Faculty.class, idFaculty);
             if (f == null) {
-                throw new IllegalArgumentException("Faculty does not exist with id: " + idFacultad);
+                throw new IllegalArgumentException("Faculty does not exist with id: " + idFaculty);
             }
             
-            Carrera c = new Carrera(nombre.trim(), f);
+            Career c = new Career(nombre.trim(), f);
             session.persist(c);
             return c;
         });
     }
 
     @Override
-    public void update(Carrera carrera) {
-        if (carrera == null || carrera.getIdCarrera() == null) {
-            throw new IllegalArgumentException("Career cannot be null and must have idCarrera");
+    public void update(Career carrera) {
+        if (carrera == null || carrera.getIdCareer() == null) {
+            throw new IllegalArgumentException("Career cannot be null and must have idCareer");
         }
         
         executeInTransaction(session -> {
-            Carrera c = (Carrera) session.get(Carrera.class, carrera.getIdCarrera());
+            Career c = (Career) session.get(Career.class, carrera.getIdCareer());
             if (c == null) {
-                throw new IllegalArgumentException("Career not found with id: " + carrera.getIdCarrera());
+                throw new IllegalArgumentException("Career not found with id: " + carrera.getIdCareer());
             }
             
             c.setNombre(carrera.getNombre());
-            if (carrera.getFacultad() != null) {
-                Facultad f = (Facultad) session.get(Facultad.class, carrera.getFacultad().getIdFacultad());
+            if (carrera.getFaculty() != null) {
+                Faculty f = (Faculty) session.get(Faculty.class, carrera.getFaculty().getIdFaculty());
                 if (f != null) {
-                    c.setFacultad(f);
+                    c.setFaculty(f);
                 }
             }
             
@@ -85,13 +85,13 @@ public class HibernateCareerService extends BaseHibernateService implements Care
     }
 
     @Override
-    public void delete(Carrera carrera) {
+    public void delete(Career carrera) {
         if (carrera == null) {
             throw new IllegalArgumentException("Career cannot be null");
         }
         
         executeInTransaction(session -> {
-            Carrera c = (Carrera) session.get(Carrera.class, carrera.getIdCarrera());
+            Career c = (Career) session.get(Career.class, carrera.getIdCareer());
             if (c != null) {
                 session.delete(c);
             }

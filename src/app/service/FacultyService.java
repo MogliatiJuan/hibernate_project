@@ -1,19 +1,19 @@
 package app.service;
 
-import model.Facultad;
+import model.Faculty;
 import java.util.List;
 import java.util.Optional;
 
 public interface FacultyService {
-    List<Facultad> list();
+    List<Faculty> list();
     
-    Optional<Facultad> findById(Integer id);
+    Optional<Faculty> findById(Integer id);
     
-    Optional<Facultad> findByName(String nombre);
+    Optional<Faculty> findByName(String nombre);
     
-    Facultad create(String nombre, Integer idCiudad);
+    Faculty create(String nombre, Integer idCiudad);
     
-    void update(Facultad facultad);
+    void update(Faculty facultad);
     
-    void delete(Facultad facultad);
+    void delete(Faculty facultad);
 }

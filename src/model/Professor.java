@@ -1,20 +1,20 @@
 package model;
 
-public class Profesor extends Persona {
+public class Professor extends Person {
 
     private Integer antiguedad;
 
-    public Profesor() {
+    public Professor() {
     }
 
-    public Profesor(Integer antiguedad) {
+    public Professor(Integer antiguedad) {
         this.antiguedad = antiguedad;
     }
 
-    public Profesor(Integer antiguedad,
+    public Professor(Integer antiguedad,
             String apellido, String nombre,
             Integer dni, String fechaNac,
-            Ciudad ciudad) {
+            City ciudad) {
         super(apellido, nombre, dni, fechaNac, ciudad);
         this.antiguedad = antiguedad;
     }
@@ -29,7 +29,8 @@ public class Profesor extends Persona {
 
     @Override
     public String toString() {
-        return "{Profesor[" + "antiguedad:" + antiguedad + "]}";
+        return "{Professor[" + "antiguedad:" + antiguedad + "]}";
     }
 
 }
+

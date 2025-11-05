@@ -1,8 +1,8 @@
 package infra.service;
 
 import app.service.FacultyService;
-import model.Ciudad;
-import model.Facultad;
+import model.City;
+import model.Faculty;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,30 +10,30 @@ import java.util.Optional;
 public class HibernateFacultyService extends BaseHibernateService implements FacultyService {
 
     @Override
-    public List<Facultad> list() {
+    public List<Faculty> list() {
         return executeInSession(session -> {
-            return createQuery(session, "from Facultad f order by f.idFacultad", Facultad.class);
+            return createQuery(session, "from Faculty f order by f.idFaculty", Faculty.class);
         });
     }
 
     @Override
-    public Optional<Facultad> findById(Integer id) {
+    public Optional<Faculty> findById(Integer id) {
         if (id == null) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            Facultad f = (Facultad) session.get(Facultad.class, id);
+            Faculty f = (Faculty) session.get(Faculty.class, id);
             return Optional.ofNullable(f);
         });
     }
 
     @Override
-    public Optional<Facultad> findByName(String nombre) {
+    public Optional<Faculty> findByName(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<Facultad> list = createQuery(session, "from Facultad f where f.nombre = :n", "n", nombre.trim(), Facultad.class);
+            List<Faculty> list = createQuery(session, "from Faculty f where f.nombre = :n", "n", nombre.trim(), Faculty.class);
             if (list != null && !list.isEmpty()) {
                 return Optional.of(list.get(0));
             }
@@ -42,40 +42,40 @@ public class HibernateFacultyService extends BaseHibernateService implements Fac
     }
 
     @Override
-    public Facultad create(String nombre, Integer idCiudad) {
-        if (nombre == null || idCiudad == null) {
-            throw new IllegalArgumentException("Name and idCiudad are required");
+    public Faculty create(String nombre, Integer idCity) {
+        if (nombre == null || idCity == null) {
+            throw new IllegalArgumentException("Name and idCity are required");
         }
         
         return executeInTransaction(session -> {
-            Ciudad c = (Ciudad) session.get(Ciudad.class, idCiudad);
+            City c = (City) session.get(City.class, idCity);
             if (c == null) {
-                throw new IllegalArgumentException("City does not exist with id: " + idCiudad);
+                throw new IllegalArgumentException("City does not exist with id: " + idCity);
             }
             
-            Facultad f = new Facultad(nombre.trim(), c);
+            Faculty f = new Faculty(nombre.trim(), c);
             session.persist(f);
             return f;
         });
     }
 
     @Override
-    public void update(Facultad facultad) {
-        if (facultad == null || facultad.getIdFacultad() == null) {
-            throw new IllegalArgumentException("Faculty cannot be null and must have idFacultad");
+    public void update(Faculty facultad) {
+        if (facultad == null || facultad.getIdFaculty() == null) {
+            throw new IllegalArgumentException("Faculty cannot be null and must have idFaculty");
         }
         
         executeInTransaction(session -> {
-            Facultad f = (Facultad) session.get(Facultad.class, facultad.getIdFacultad());
+            Faculty f = (Faculty) session.get(Faculty.class, facultad.getIdFaculty());
             if (f == null) {
-                throw new IllegalArgumentException("Faculty not found with id: " + facultad.getIdFacultad());
+                throw new IllegalArgumentException("Faculty not found with id: " + facultad.getIdFaculty());
             }
             
             f.setNombre(facultad.getNombre());
-            if (facultad.getCiudad() != null) {
-                Ciudad c = (Ciudad) session.get(Ciudad.class, facultad.getCiudad().getIdCiudad());
+            if (facultad.getCity() != null) {
+                City c = (City) session.get(City.class, facultad.getCity().getIdCity());
                 if (c != null) {
-                    f.setCiudad(c);
+                    f.setCity(c);
                 }
             }
             
@@ -85,13 +85,13 @@ public class HibernateFacultyService extends BaseHibernateService implements Fac
     }
 
     @Override
-    public void delete(Facultad facultad) {
+    public void delete(Faculty facultad) {
         if (facultad == null) {
             throw new IllegalArgumentException("Faculty cannot be null");
         }
         
         executeInTransaction(session -> {
-            Facultad f = (Facultad) session.get(Facultad.class, facultad.getIdFacultad());
+            Faculty f = (Faculty) session.get(Faculty.class, facultad.getIdFaculty());
             if (f != null) {
                 session.delete(f);
             }

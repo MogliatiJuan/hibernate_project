@@ -1,19 +1,19 @@
 package app.service;
 
-import model.Profesor;
+import model.Professor;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProfessorService {
-    List<Profesor> list();
+    List<Professor> list();
     
-    Optional<Profesor> findById(Integer dni);
+    Optional<Professor> findById(Integer dni);
     
-    Optional<Profesor> findByLastNameAndFirstName(String apellido, String nombre);
+    Optional<Professor> findByLastNameAndFirstName(String apellido, String nombre);
     
-    Profesor create(String apellido, String nombre, Integer dni, String fechaNac, Integer antiguedad, Integer idCiudad);
+    Professor create(String apellido, String nombre, Integer dni, String fechaNac, Integer antiguedad, Integer idCiudad);
     
-    void update(Profesor profesor);
+    void update(Professor profesor);
     
-    void delete(Profesor profesor);
+    void delete(Professor profesor);
 }

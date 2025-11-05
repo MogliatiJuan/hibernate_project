@@ -1,9 +1,9 @@
 package infra.service;
 
 import app.service.StudentService;
-import model.Alumno;
-import model.Ciudad;
-import model.Materia;
+import model.Student;
+import model.City;
+import model.Subject;
 
 import java.sql.Date;
 import java.util.List;
@@ -12,32 +12,32 @@ import java.util.Optional;
 public class HibernateStudentService extends BaseHibernateService implements StudentService {
 
     @Override
-    public List<Alumno> list() {
+    public List<Student> list() {
         return executeInSession(session -> {
-            return createQuery(session, "from Alumno a order by a.apellido, a.nombre", Alumno.class);
+            return createQuery(session, "from Student a order by a.apellido, a.nombre", Student.class);
         });
     }
 
     @Override
-    public Optional<Alumno> findById(Integer dni) {
+    public Optional<Student> findById(Integer dni) {
         if (dni == null) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            Alumno a = (Alumno) session.get(Alumno.class, dni);
+            Student a = (Student) session.get(Student.class, dni);
             return Optional.ofNullable(a);
         });
     }
 
     @Override
-    public Optional<Alumno> findByLastNameAndFirstName(String apellido, String nombre) {
+    public Optional<Student> findByLastNameAndFirstName(String apellido, String nombre) {
         if (apellido == null || nombre == null || apellido.trim().isEmpty() || nombre.trim().isEmpty()) {
             return Optional.empty();
         }
         return executeInSession(session -> {
-            List<Alumno> list = createQueryWithParams(session,
-                "from Alumno a where a.apellido = :a and a.nombre = :n",
-                Alumno.class,
+            List<Student> list = createQueryWithParams(session,
+                "from Student a where a.apellido = :a and a.nombre = :n",
+                Student.class,
                 "a", apellido.trim(),
                 "n", nombre.trim());
             if (list != null && !list.isEmpty()) {
@@ -48,26 +48,26 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public Alumno create(String apellido, String nombre, Integer dni, Date fechaNac, Integer idCiudad, Integer numLegajo, Integer anioIngreso, Integer idMateria) {
-        if (apellido == null || nombre == null || dni == null || idCiudad == null || numLegajo == null || anioIngreso == null) {
-            throw new IllegalArgumentException("Last name, first name, DNI, idCiudad, numLegajo and anioIngreso are required");
+    public Student create(String apellido, String nombre, Integer dni, Date fechaNac, Integer idCity, Integer numLegajo, Integer anioIngreso, Integer idSubject) {
+        if (apellido == null || nombre == null || dni == null || idCity == null || numLegajo == null || anioIngreso == null) {
+            throw new IllegalArgumentException("Last name, first name, DNI, idCity, numLegajo and anioIngreso are required");
         }
         
         return executeInTransaction(session -> {
-            Ciudad c = (Ciudad) session.get(Ciudad.class, idCiudad);
+            City c = (City) session.get(City.class, idCity);
             if (c == null) {
-                throw new IllegalArgumentException("City does not exist with id: " + idCiudad);
+                throw new IllegalArgumentException("City does not exist with id: " + idCity);
             }
             
-            Materia m = null;
-            if (idMateria != null) {
-                m = (Materia) session.get(Materia.class, idMateria);
+            Subject m = null;
+            if (idSubject != null) {
+                m = (Subject) session.get(Subject.class, idSubject);
                 // If it doesn't exist, create without subject (no error thrown)
             }
             
-            Alumno a = new Alumno(apellido.trim(), nombre.trim(), dni, fechaNac, c, numLegajo, anioIngreso, null);
+            Student a = new Student(apellido.trim(), nombre.trim(), dni, fechaNac, c, numLegajo, anioIngreso, null);
             if (m != null) {
-                a.addMateria(m);
+                a.addSubject(m);
             }
             
             session.persist(a);
@@ -76,34 +76,34 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public void update(Alumno alumno) {
+    public void update(Student alumno) {
         if (alumno == null || alumno.getDni() == null) {
             throw new IllegalArgumentException("Student cannot be null and must have DNI");
         }
         
         executeInTransaction(session -> {
-            Alumno a = (Alumno) session.get(Alumno.class, alumno.getDni());
+            Student a = (Student) session.get(Student.class, alumno.getDni());
             if (a == null) {
                 throw new IllegalArgumentException("Student not found with DNI: " + alumno.getDni());
             }
             
             a.setNumLegajo(alumno.getNumLegajo());
             a.setAnioIngreso(alumno.getAnioIngreso());
-            if (alumno.getCiudad() != null) {
-                Ciudad c = (Ciudad) session.get(Ciudad.class, alumno.getCiudad().getIdCiudad());
+            if (alumno.getCity() != null) {
+                City c = (City) session.get(City.class, alumno.getCity().getIdCity());
                 if (c != null) {
-                    a.setCiudad(c);
+                    a.setCity(c);
                 }
             }
             
             // Update materias collection by syncing with the detached entity's materias
             // This is simplified - in a real scenario you might want more sophisticated merging
-            a.getMaterias().clear();
-            if (alumno.getMaterias() != null) {
-                for (Materia m : alumno.getMaterias()) {
-                    Materia materiaAttached = (Materia) session.get(Materia.class, m.getIdMateria());
+            a.getSubjects().clear();
+            if (alumno.getSubjects() != null) {
+                for (Subject m : alumno.getSubjects()) {
+                    Subject materiaAttached = (Subject) session.get(Subject.class, m.getIdSubject());
                     if (materiaAttached != null) {
-                        a.addMateria(materiaAttached);
+                        a.addSubject(materiaAttached);
                     }
                 }
             }
@@ -114,13 +114,13 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public void delete(Alumno alumno) {
+    public void delete(Student alumno) {
         if (alumno == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
         
         executeInTransaction(session -> {
-            Alumno a = (Alumno) session.get(Alumno.class, alumno.getDni());
+            Student a = (Student) session.get(Student.class, alumno.getDni());
             if (a != null) {
                 session.delete(a);
             }
@@ -129,46 +129,46 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     }
 
     @Override
-    public void addSubject(Integer dniAlumno, Integer idMateria) {
-        if (dniAlumno == null || idMateria == null) {
-            throw new IllegalArgumentException("DNI and idMateria are required");
+    public void addSubject(Integer dniStudent, Integer idSubject) {
+        if (dniStudent == null || idSubject == null) {
+            throw new IllegalArgumentException("DNI and idSubject are required");
         }
         
         executeInTransaction(session -> {
-            Alumno a = (Alumno) session.get(Alumno.class, dniAlumno);
+            Student a = (Student) session.get(Student.class, dniStudent);
             if (a == null) {
-                throw new IllegalArgumentException("Student not found with DNI: " + dniAlumno);
+                throw new IllegalArgumentException("Student not found with DNI: " + dniStudent);
             }
             
-            Materia m = (Materia) session.get(Materia.class, idMateria);
+            Subject m = (Subject) session.get(Subject.class, idSubject);
             if (m == null) {
-                throw new IllegalArgumentException("Subject not found with id: " + idMateria);
+                throw new IllegalArgumentException("Subject not found with id: " + idSubject);
             }
             
-            a.addMateria(m);
+            a.addSubject(m);
             session.update(a);
             return null;
         });
     }
 
     @Override
-    public void removeSubject(Integer dniAlumno, Integer idMateria) {
-        if (dniAlumno == null || idMateria == null) {
-            throw new IllegalArgumentException("DNI and idMateria are required");
+    public void removeSubject(Integer dniStudent, Integer idSubject) {
+        if (dniStudent == null || idSubject == null) {
+            throw new IllegalArgumentException("DNI and idSubject are required");
         }
         
         executeInTransaction(session -> {
-            Alumno a = (Alumno) session.get(Alumno.class, dniAlumno);
+            Student a = (Student) session.get(Student.class, dniStudent);
             if (a == null) {
-                throw new IllegalArgumentException("Student not found with DNI: " + dniAlumno);
+                throw new IllegalArgumentException("Student not found with DNI: " + dniStudent);
             }
             
-            Materia m = (Materia) session.get(Materia.class, idMateria);
+            Subject m = (Subject) session.get(Subject.class, idSubject);
             if (m == null) {
-                throw new IllegalArgumentException("Subject not found with id: " + idMateria);
+                throw new IllegalArgumentException("Subject not found with id: " + idSubject);
             }
             
-            a.removeMateria(m);
+            a.removeSubject(m);
             session.update(a);
             return null;
         });

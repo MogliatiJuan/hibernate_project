@@ -2,9 +2,9 @@ package presentation;
 
 import app.service.SubjectService;
 import infra.service.HibernateSubjectService;
-import model.Carrera;
-import model.Materia;
-import model.Profesor;
+import model.Career;
+import model.Subject;
+import model.Professor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,32 +81,32 @@ public class SubjectABM extends JFrame {
         String nivel = JOptionPane.showInputDialog(this, "Level (int):");
         String orden = JOptionPane.showInputDialog(this, "Order (int):");
         String dniProf = JOptionPane.showInputDialog(this, "Professor DNI:");
-        String idCarrera = JOptionPane.showInputDialog(this, "idCarrera:");
-        if (nombre == null || nivel == null || orden == null || idCarrera == null) {
+        String idCareer = JOptionPane.showInputDialog(this, "idCareer:");
+        if (nombre == null || nivel == null || orden == null || idCareer == null) {
             return;
         }
-        if (nombre.trim().isEmpty() || nivel.trim().isEmpty() || orden.trim().isEmpty() || idCarrera.trim().isEmpty()) {
-            out.append("✖ Name, level, order and idCarrera are required\n");
+        if (nombre.trim().isEmpty() || nivel.trim().isEmpty() || orden.trim().isEmpty() || idCareer.trim().isEmpty()) {
+            out.append("✖ Name, level, order and idCareer are required\n");
             return;
         }
 
         try {
             out.setText("");
-            Integer dniProfesor = null;
+            Integer dniProfessor = null;
             if (dniProf != null && !dniProf.trim().isEmpty()) {
-                dniProfesor = Integer.parseInt(dniProf.trim());
+                dniProfessor = Integer.parseInt(dniProf.trim());
             }
 
-            Materia m = subjectService.create(
+            Subject m = subjectService.create(
                     nombre.trim(),
                     Integer.parseInt(nivel.trim()),
                     Integer.parseInt(orden.trim()),
-                    dniProfesor,
-                    Integer.parseInt(idCarrera.trim())
+                    dniProfessor,
+                    Integer.parseInt(idCareer.trim())
             );
 
-            out.append("✔ Subject created -> id=" + m.getIdMateria() + ", name=" + m.getNombre()
-                    + " | level=" + m.getNivel() + " | prof=" + (m.getProfesor() != null ? m.getProfesor().getDni() : null) + " | idCarrera=" + m.getCarrera().getIdCarrera() + "\n");
+            out.append("✔ Subject created -> id=" + m.getIdSubject() + ", name=" + m.getNombre()
+                    + " | level=" + m.getNivel() + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null) + " | idCareer=" + m.getCareer().getIdCareer() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -114,31 +114,31 @@ public class SubjectABM extends JFrame {
     }
 
     private void update() {
-        String idStr = JOptionPane.showInputDialog(this, "idMateria (Enter to search by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idSubject (Enter to search by name):");
         try {
             out.setText("");
-            Optional<Materia> optMateria;
+            Optional<Subject> optSubject;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optMateria = subjectService.findById(Integer.parseInt(idStr.trim()));
+                optSubject = subjectService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to update:");
                 if (nombre == null) {
                     return;
                 }
-                optMateria = subjectService.findByName(nombre.trim());
+                optSubject = subjectService.findByName(nombre.trim());
             }
             
-            if (!optMateria.isPresent()) {
+            if (!optSubject.isPresent()) {
                 out.append("✖ Subject does not exist\n");
                 return;
             }
 
-            Materia m = optMateria.get();
+            Subject m = optSubject.get();
             String nuevoNom = JOptionPane.showInputDialog(this, "New name:", m.getNombre());
             String nivel = JOptionPane.showInputDialog(this, "New level (int):", String.valueOf(m.getNivel()));
             String orden = JOptionPane.showInputDialog(this, "New order (int):", String.valueOf(m.getOrden() != null ? m.getOrden() : 0));
             String dniProf = JOptionPane.showInputDialog(this, "New professor DNI (Enter to keep):");
-            String idCarrera = JOptionPane.showInputDialog(this, "New idCarrera (Enter to keep):");
+            String idCareer = JOptionPane.showInputDialog(this, "New idCareer (Enter to keep):");
 
             if (nuevoNom != null && !nuevoNom.trim().isEmpty()) {
                 m.setNombre(nuevoNom.trim());
@@ -153,24 +153,24 @@ public class SubjectABM extends JFrame {
             if (dniProf != null && !dniProf.trim().isEmpty()) {
                 if (subjectService instanceof HibernateSubjectService) {
                     HibernateSubjectService hibernateService = (HibernateSubjectService) subjectService;
-                    Profesor p = hibernateService.findProfessorById(Integer.parseInt(dniProf.trim()));
+                    Professor p = hibernateService.findProfessorById(Integer.parseInt(dniProf.trim()));
                     if (p != null) {
-                        m.setProfesor(p);
+                        m.setProfessor(p);
                     }
                 }
             }
-            if (idCarrera != null && !idCarrera.trim().isEmpty()) {
+            if (idCareer != null && !idCareer.trim().isEmpty()) {
                 if (subjectService instanceof HibernateSubjectService) {
                     HibernateSubjectService hibernateService = (HibernateSubjectService) subjectService;
-                    Carrera c = hibernateService.findCareerById(Integer.parseInt(idCarrera.trim()));
+                    Career c = hibernateService.findCareerById(Integer.parseInt(idCareer.trim()));
                     if (c != null) {
-                        m.setCarrera(c);
+                        m.setCareer(c);
                     }
                 }
             }
 
             subjectService.update(m);
-            out.append("✔ Subject updated -> id=" + m.getIdMateria() + "\n");
+            out.append("✔ Subject updated -> id=" + m.getIdSubject() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -178,28 +178,28 @@ public class SubjectABM extends JFrame {
     }
 
     private void delete() {
-        String idStr = JOptionPane.showInputDialog(this, "idMateria (Enter to delete by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idSubject (Enter to delete by name):");
         try {
             out.setText("");
-            Optional<Materia> optMateria;
+            Optional<Subject> optSubject;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optMateria = subjectService.findById(Integer.parseInt(idStr.trim()));
+                optSubject = subjectService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to delete:");
                 if (nombre == null) {
                     return;
                 }
-                optMateria = subjectService.findByName(nombre.trim());
+                optSubject = subjectService.findByName(nombre.trim());
             }
             
-            if (!optMateria.isPresent()) {
+            if (!optSubject.isPresent()) {
                 out.append("✖ Subject does not exist\n");
                 return;
             }
 
-            Materia m = optMateria.get();
+            Subject m = optSubject.get();
             subjectService.delete(m);
-            out.append("✔ Subject deleted -> id=" + m.getIdMateria() + "\n");
+            out.append("✔ Subject deleted -> id=" + m.getIdSubject() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
@@ -213,19 +213,19 @@ public class SubjectABM extends JFrame {
     private void refreshList() {
         try {
             out.setText("");
-            List<Materia> materias = subjectService.list();
+            List<Subject> materias = subjectService.list();
             out.append("SUBJECTS:\n");
 
             if (materias.isEmpty()) {
                 out.append("  (No subjects yet)\n");
             } else {
-                for (Materia m : materias) {
-                    out.append(" - id=" + m.getIdMateria()
+                for (Subject m : materias) {
+                    out.append(" - id=" + m.getIdSubject()
                             + " | " + m.getNombre()
                             + " | level=" + m.getNivel()
                             + " | order=" + m.getOrden()
-                            + " | prof=" + (m.getProfesor() != null ? m.getProfesor().getDni() : null)
-                            + " | idCarrera=" + (m.getCarrera() != null ? m.getCarrera().getIdCarrera() : null)
+                            + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null)
+                            + " | idCareer=" + (m.getCareer() != null ? m.getCareer().getIdCareer() : null)
                             + "\n");
                 }
             }
@@ -252,27 +252,27 @@ public class SubjectABM extends JFrame {
             out.setText("");
             out.append("SUBJECTS (level=" + nivel + "):\n");
 
-            List<Materia> materias = subjectService.listByLevel(nivel);
+            List<Subject> materias = subjectService.listByLevel(nivel);
             if (materias == null || materias.isEmpty()) {
                 out.append("(No subjects for that level)\n");
                 return;
             }
 
-            for (Materia m : materias) {
-                appendMateriaLine(m);
+            for (Subject m : materias) {
+                appendSubjectLine(m);
             }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
     }
 
-    private void appendMateriaLine(Materia m) {
-        out.append(" - id=" + safeId(m.getIdMateria())
+    private void appendSubjectLine(Subject m) {
+        out.append(" - id=" + safeId(m.getIdSubject())
                 + " | " + safe(m.getNombre())
                 + " | level=" + safe(m.getNivel())
                 + " | order=" + safe(m.getOrden())
-                + " | prof=" + (m.getProfesor() != null ? m.getProfesor().getDni() : null)
-                + " | idCarrera=" + (m.getCarrera() != null ? m.getCarrera().getIdCarrera() : null)
+                + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null)
+                + " | idCareer=" + (m.getCareer() != null ? m.getCareer().getIdCareer() : null)
                 + "\n");
     }
 

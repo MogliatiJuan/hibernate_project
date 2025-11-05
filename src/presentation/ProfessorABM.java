@@ -1,8 +1,8 @@
 package presentation;
 
 import app.service.ProfessorService;
-import model.Ciudad;
-import model.Profesor;
+import model.City;
+import model.Professor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,25 +76,25 @@ public class ProfessorABM extends JFrame {
         String nombre = JOptionPane.showInputDialog(this, "First name:");
         String fecha = JOptionPane.showInputDialog(this, "Birth date (yyyy-MM-dd):");
         String antig = JOptionPane.showInputDialog(this, "Seniority (years):");
-        String idCiudad = JOptionPane.showInputDialog(this, "idCiudad:");
-        if (dni == null || apellido == null || nombre == null || fecha == null || antig == null || idCiudad == null) {
+        String idCity = JOptionPane.showInputDialog(this, "idCity:");
+        if (dni == null || apellido == null || nombre == null || fecha == null || antig == null || idCity == null) {
             return;
         }
 
-        if (dni.trim().isEmpty() || antig.trim().isEmpty() || idCiudad.trim().isEmpty()) {
-            out.append("✖ DNI, seniority and idCiudad are required\n");
+        if (dni.trim().isEmpty() || antig.trim().isEmpty() || idCity.trim().isEmpty()) {
+            out.append("✖ DNI, seniority and idCity are required\n");
             return;
         }
 
         try {
             out.setText("");
-            Profesor p = professorService.create(
+            Professor p = professorService.create(
                     apellido.trim(),
                     nombre.trim(),
                     Integer.parseInt(dni.trim()),
                     fecha.trim(),
                     Integer.parseInt(antig.trim()),
-                    Integer.parseInt(idCiudad.trim())
+                    Integer.parseInt(idCity.trim())
             );
             out.append("✔ Professor created -> dni=" + p.getDni() + ", " + p.getApellido() + ", " + p.getNombre() + "\n");
             refreshList();
@@ -107,34 +107,34 @@ public class ProfessorABM extends JFrame {
         String dni = JOptionPane.showInputDialog(this, "DNI to update (Enter to search by LastName+FirstName):");
         try {
             out.setText("");
-            Optional<Profesor> optProfesor;
+            Optional<Professor> optProfessor;
             if (dni != null && !dni.trim().isEmpty()) {
-                optProfesor = professorService.findById(Integer.parseInt(dni.trim()));
+                optProfessor = professorService.findById(Integer.parseInt(dni.trim()));
             } else {
                 String ape = JOptionPane.showInputDialog(this, "Exact last name:");
                 String nom = JOptionPane.showInputDialog(this, "Exact first name:");
                 if (ape == null || nom == null) {
                     return;
                 }
-                optProfesor = professorService.findByLastNameAndFirstName(ape.trim(), nom.trim());
+                optProfessor = professorService.findByLastNameAndFirstName(ape.trim(), nom.trim());
             }
             
-            if (!optProfesor.isPresent()) {
+            if (!optProfessor.isPresent()) {
                 out.append("✖ Professor does not exist\n");
                 return;
             }
 
-            Profesor p = optProfesor.get();
+            Professor p = optProfessor.get();
             String antig = JOptionPane.showInputDialog(this, "New seniority:", String.valueOf(p.getAntiguedad()));
-            String idCiudad = JOptionPane.showInputDialog(this, "New idCiudad (Enter to keep):");
+            String idCity = JOptionPane.showInputDialog(this, "New idCity (Enter to keep):");
 
             if (antig != null && !antig.trim().isEmpty()) {
                 p.setAntiguedad(Integer.parseInt(antig.trim()));
             }
-            if (idCiudad != null && !idCiudad.trim().isEmpty()) {
-                Ciudad c = new Ciudad();
-                c.setIdCiudad(Integer.parseInt(idCiudad.trim()));
-                p.setCiudad(c);
+            if (idCity != null && !idCity.trim().isEmpty()) {
+                City c = new City();
+                c.setIdCity(Integer.parseInt(idCity.trim()));
+                p.setCity(c);
             }
 
             professorService.update(p);
@@ -153,13 +153,13 @@ public class ProfessorABM extends JFrame {
 
         try {
             out.setText("");
-            Optional<Profesor> optProfesor = professorService.findById(Integer.parseInt(dni.trim()));
-            if (!optProfesor.isPresent()) {
+            Optional<Professor> optProfessor = professorService.findById(Integer.parseInt(dni.trim()));
+            if (!optProfessor.isPresent()) {
                 out.append("✖ Does not exist\n");
                 return;
             }
 
-            Profesor p = optProfesor.get();
+            Professor p = optProfessor.get();
             professorService.delete(p);
             out.append("✔ Professor deleted\n");
             refreshList();
@@ -175,15 +175,15 @@ public class ProfessorABM extends JFrame {
     private void refreshList() {
         try {
             out.setText("");
-            List<Profesor> profesores = professorService.list();
+            List<Professor> profesores = professorService.list();
             out.append("PROFESSORS (by seniority):\n");
             if (profesores.isEmpty()) {
                 out.append("  (No professors yet)\n");
             } else {
-                for (Profesor p : profesores) {
+                for (Professor p : profesores) {
                     out.append(" - dni=" + p.getDni() + " | " + p.getApellido() + ", " + p.getNombre()
                             + " | seniority=" + p.getAntiguedad()
-                            + " | idCiudad=" + (p.getCiudad() != null ? p.getCiudad().getIdCiudad() : null) + "\n");
+                            + " | idCity=" + (p.getCity() != null ? p.getCity().getIdCity() : null) + "\n");
                 }
             }
         } catch (Exception e) {

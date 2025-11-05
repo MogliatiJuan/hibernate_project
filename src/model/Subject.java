@@ -3,21 +3,21 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Materia {
+public class Subject {
 
     private Integer idMateria;
     private String nombre;
     private Integer nivel;
     private Integer orden;
-    private Profesor profesor;
-    private Carrera carrera;
-    private Set<Alumno> alumnos = new HashSet<>();
+    private Professor profesor;
+    private Career carrera;
+    private Set<Student> alumnos = new HashSet<>();
 
-    public Materia() {
+    public Subject() {
     }
 
-    public Materia(String nombre, Integer nivel, Integer orden,
-            Profesor profesor, Carrera carrera, Set<Alumno> alumnos) {
+    public Subject(String nombre, Integer nivel, Integer orden,
+            Professor profesor, Career carrera, Set<Student> alumnos) {
         this.nombre = nombre;
         this.nivel = nivel;
         this.orden = orden;
@@ -60,32 +60,32 @@ public class Materia {
         this.orden = orden;
     }
 
-    public Profesor getProfesor() {
+    public Professor getProfesor() {
         return profesor;
     }
 
-    public void setProfesor(Profesor profesor) {
+    public void setProfesor(Professor profesor) {
         this.profesor = profesor;
     }
 
-    public Carrera getCarrera() {
+    public Career getCarrera() {
         return carrera;
     }
 
-    public void setCarrera(Carrera carrera) {
+    public void setCarrera(Career carrera) {
         this.carrera = carrera;
     }
 
-    public Set<Alumno> getAlumnos() {
+    public Set<Student> getAlumnos() {
         return alumnos;
     }
 
-    public void setAlumnos(Set<Alumno> alumnos) {
+    public void setAlumnos(Set<Student> alumnos) {
         this.alumnos = alumnos;
     }
 
     // helpers
-    public void addAlumno(Alumno a) {
+    public void addAlumno(Student a) {
         if (a == null) {
             return;
         }
@@ -93,7 +93,7 @@ public class Materia {
         a.getMaterias().add(this);
     }
 
-    public void removeAlumno(Alumno a) {
+    public void removeAlumno(Student a) {
         if (a == null) {
             return;
         }
@@ -103,7 +103,7 @@ public class Materia {
 
     @Override
     public String toString() {
-        return "Materia{nombre=" + nombre
+        return "Subject{nombre=" + nombre
                 + ", nivel=" + nivel
                 + ", orden=" + orden
                 + ", profesor=" + (profesor != null ? profesor.getDni() : null)
@@ -112,3 +112,4 @@ public class Materia {
                 + "}";
     }
 }
+

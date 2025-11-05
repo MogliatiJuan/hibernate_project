@@ -2,18 +2,18 @@ package model;
 
 import java.sql.Date;
 
-public class Persona {
+public class Person {
 
     private String apellido;
     private String nombre;
     private Integer dni;
     private Date fechaNac;
-    private Ciudad ciudad;
+    private City ciudad;
 
-    public Persona() {
+    public Person() {
     }
 
-    public Persona(String apellido, String nombre, Integer dni, Date fechaNac, Ciudad ciudad) {
+    public Person(String apellido, String nombre, Integer dni, Date fechaNac, City ciudad) {
         this.apellido = apellido;
         this.nombre = nombre;
         this.dni = dni;
@@ -22,7 +22,7 @@ public class Persona {
     }
 
     // constructor overload
-    public Persona(String apellido, String nombre, Integer dni, String fechaNacYmd, Ciudad ciudad) {
+    public Person(String apellido, String nombre, Integer dni, String fechaNacYmd, City ciudad) {
         this(apellido, nombre, dni,
                 (fechaNacYmd == null || fechaNacYmd.isEmpty()) ? null
                 : Date.valueOf(fechaNacYmd.replace('/', '-')),
@@ -69,17 +69,18 @@ public class Persona {
         this.fechaNac = fechaNac;
     }
 
-    public Ciudad getCiudad() {
+    public City getCiudad() {
         return ciudad;
     }
 
-    public void setCiudad(Ciudad ciudad) {
+    public void setCiudad(City ciudad) {
         this.ciudad = ciudad;
     }
 
     @Override
     public String toString() {
-        return "{Persona[" + "apellido:" + apellido + ", nombre:" + nombre + ", dni:" + dni + ", fechaNac:" + fechaNac + ", ciudad:" + ciudad + "]}";
+        return "{Person[" + "apellido:" + apellido + ", nombre:" + nombre + ", dni:" + dni + ", fechaNac:" + fechaNac + ", ciudad:" + ciudad + "]}";
     }
 
 }
+

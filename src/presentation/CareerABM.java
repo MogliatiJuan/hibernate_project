@@ -1,8 +1,8 @@
 package presentation;
 
 import app.service.CareerService;
-import model.Carrera;
-import model.Facultad;
+import model.Career;
+import model.Faculty;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,20 +72,20 @@ public class CareerABM extends JFrame {
 
     private void create() {
         String nombre = JOptionPane.showInputDialog(this, "Career name:");
-        String idFacultad = JOptionPane.showInputDialog(this, "idFacultad:");
-        if (nombre == null || idFacultad == null) {
+        String idFaculty = JOptionPane.showInputDialog(this, "idFaculty:");
+        if (nombre == null || idFaculty == null) {
             return;
         }
-        if (nombre.trim().isEmpty() || idFacultad.trim().isEmpty()) {
-            out.append("✖ Name and idFacultad are required\n");
+        if (nombre.trim().isEmpty() || idFaculty.trim().isEmpty()) {
+            out.append("✖ Name and idFaculty are required\n");
             return;
         }
 
         try {
             out.setText("");
-            Carrera c = careerService.create(nombre.trim(), Integer.parseInt(idFacultad.trim()));
-            out.append("✔ Career created -> id=" + c.getIdCarrera() + ", name=" + c.getNombre()
-                    + ", idFacultad=" + c.getFacultad().getIdFacultad() + "\n");
+            Career c = careerService.create(nombre.trim(), Integer.parseInt(idFaculty.trim()));
+            out.append("✔ Career created -> id=" + c.getIdCareer() + ", name=" + c.getNombre()
+                    + ", idFaculty=" + c.getFaculty().getIdFaculty() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -93,40 +93,40 @@ public class CareerABM extends JFrame {
     }
 
     private void update() {
-        String idStr = JOptionPane.showInputDialog(this, "idCarrera (Enter to search by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idCareer (Enter to search by name):");
         try {
             out.setText("");
-            Optional<Carrera> optCarrera;
+            Optional<Career> optCareer;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optCarrera = careerService.findById(Integer.parseInt(idStr.trim()));
+                optCareer = careerService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to update:");
                 if (nombre == null) {
                     return;
                 }
-                optCarrera = careerService.findByName(nombre.trim());
+                optCareer = careerService.findByName(nombre.trim());
             }
             
-            if (!optCarrera.isPresent()) {
+            if (!optCareer.isPresent()) {
                 out.append("✖ Career does not exist\n");
                 return;
             }
 
-            Carrera c = optCarrera.get();
+            Career c = optCareer.get();
             String nuevoNom = JOptionPane.showInputDialog(this, "New name:", c.getNombre());
-            String idFac = JOptionPane.showInputDialog(this, "New idFacultad (Enter to keep):");
+            String idFac = JOptionPane.showInputDialog(this, "New idFaculty (Enter to keep):");
 
             if (nuevoNom != null && !nuevoNom.trim().isEmpty()) {
                 c.setNombre(nuevoNom.trim());
             }
             if (idFac != null && !idFac.trim().isEmpty()) {
-                Facultad f = new Facultad();
-                f.setIdFacultad(Integer.parseInt(idFac.trim()));
-                c.setFacultad(f);
+                Faculty f = new Faculty();
+                f.setIdFaculty(Integer.parseInt(idFac.trim()));
+                c.setFaculty(f);
             }
 
             careerService.update(c);
-            out.append("✔ Career updated -> id=" + c.getIdCarrera() + ", name=" + c.getNombre() + "\n");
+            out.append("✔ Career updated -> id=" + c.getIdCareer() + ", name=" + c.getNombre() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -134,28 +134,28 @@ public class CareerABM extends JFrame {
     }
 
     private void delete() {
-        String idStr = JOptionPane.showInputDialog(this, "idCarrera (Enter to delete by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idCareer (Enter to delete by name):");
         try {
             out.setText("");
-            Optional<Carrera> optCarrera;
+            Optional<Career> optCareer;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optCarrera = careerService.findById(Integer.parseInt(idStr.trim()));
+                optCareer = careerService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to delete:");
                 if (nombre == null) {
                     return;
                 }
-                optCarrera = careerService.findByName(nombre.trim());
+                optCareer = careerService.findByName(nombre.trim());
             }
             
-            if (!optCarrera.isPresent()) {
+            if (!optCareer.isPresent()) {
                 out.append("✖ Career does not exist\n");
                 return;
             }
 
-            Carrera c = optCarrera.get();
+            Career c = optCareer.get();
             careerService.delete(c);
-            out.append("✔ Career deleted -> id=" + c.getIdCarrera() + "\n");
+            out.append("✔ Career deleted -> id=" + c.getIdCareer() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
@@ -169,15 +169,15 @@ public class CareerABM extends JFrame {
     private void refreshList() {
         try {
             out.setText("");
-            List<Carrera> carreras = careerService.list();
+            List<Career> carreras = careerService.list();
             out.append("CAREERS:\n");
 
             if (carreras.isEmpty()) {
                 out.append("  (No careers yet)\n");
             } else {
-                for (Carrera c : carreras) {
-                    out.append(" - id=" + c.getIdCarrera() + " | " + c.getNombre()
-                            + " | idFacultad=" + (c.getFacultad() != null ? c.getFacultad().getIdFacultad() : null) + "\n");
+                for (Career c : carreras) {
+                    out.append(" - id=" + c.getIdCareer() + " | " + c.getNombre()
+                            + " | idFaculty=" + (c.getFaculty() != null ? c.getFaculty().getIdFaculty() : null) + "\n");
                 }
             }
         } catch (Exception e) {

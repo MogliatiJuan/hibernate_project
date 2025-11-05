@@ -4,17 +4,17 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Alumno extends Persona {
+public class Student extends Person {
 
     private Integer numLegajo;
     private int anioIngreso;
-    private Set<Materia> materias = new HashSet<>();
+    private Set<Subject> materias = new HashSet<>();
 
-    public Alumno() {
+    public Student() {
     }
 
-    public Alumno(String apellido, String nombre, Integer dni, Date fechaNac, Ciudad ciudad,
-            Integer numLegajo, int anioIngreso, Set<Materia> materias) {
+    public Student(String apellido, String nombre, Integer dni, Date fechaNac, City ciudad,
+            Integer numLegajo, int anioIngreso, Set<Subject> materias) {
         super(apellido, nombre, dni, fechaNac, ciudad);
         this.numLegajo = numLegajo;
         this.anioIngreso = anioIngreso;
@@ -40,15 +40,15 @@ public class Alumno extends Persona {
         this.anioIngreso = anioIngreso;
     }
 
-    public Set<Materia> getMaterias() {
+    public Set<Subject> getMaterias() {
         return materias;
     }
 
-    public void setMaterias(Set<Materia> materias) {
+    public void setMaterias(Set<Subject> materias) {
         this.materias = materias;
     }
 
-    public void addMateria(Materia m) {
+    public void addMateria(Subject m) {
         if (m == null) {
             return;
         }
@@ -56,7 +56,7 @@ public class Alumno extends Persona {
         m.getAlumnos().add(this);
     }
 
-    public void removeMateria(Materia m) {
+    public void removeMateria(Subject m) {
         if (m == null) {
             return;
         }
@@ -66,9 +66,10 @@ public class Alumno extends Persona {
 
     @Override
     public String toString() {
-        return "Alumno{numLegajo=" + numLegajo
+        return "Student{numLegajo=" + numLegajo
                 + ", anioIngreso=" + anioIngreso
                 + ", materias=" + (materias != null ? materias.size() : 0)
                 + "} " + super.toString();
     }
 }
+

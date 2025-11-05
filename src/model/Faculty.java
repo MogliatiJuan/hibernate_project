@@ -1,15 +1,15 @@
 package model;
 
-public class Facultad {
+public class Faculty {
     
     private Integer idFacultad;
     private String nombre;
-    private Ciudad ciudad;
+    private City ciudad;
 
-    public Facultad() {
+    public Faculty() {
     }
 
-    public Facultad(String nombre, Ciudad ciudad) {
+    public Faculty(String nombre, City ciudad) {
         this.nombre = nombre;
         this.ciudad = ciudad;
     }
@@ -22,11 +22,11 @@ public class Facultad {
         this.nombre = nombre;
     }
 
-    public Ciudad getCiudad() {
+    public City getCiudad() {
         return ciudad;
     }
 
-    public void setCiudad(Ciudad ciudad) {
+    public void setCiudad(City ciudad) {
         this.ciudad = ciudad;
     }
 
@@ -42,7 +42,8 @@ public class Facultad {
     
     @Override
     public String toString() {
-        return "{Facultad[" + "nombre:" + nombre + ", ciudad:" + ciudad + "]}";
+        return "{Faculty[" + "nombre:" + nombre + ", ciudad:" + ciudad + "]}";
     }
 
 }
+

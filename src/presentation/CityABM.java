@@ -1,7 +1,7 @@
 package presentation;
 
 import app.service.CityService;
-import model.Ciudad;
+import model.City;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,8 +77,8 @@ public class CityABM extends JFrame {
 
         try {
             out.setText("");
-            Ciudad c = cityService.create(nombre.trim());
-            out.append("✔ City created -> id=" + c.getIdCiudad() + ", name=" + c.getNombre() + "\n");
+            City c = cityService.create(nombre.trim());
+            out.append("✔ City created -> id=" + c.getIdCity() + ", name=" + c.getNombre() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -86,33 +86,33 @@ public class CityABM extends JFrame {
     }
 
     private void update() {
-        String idStr = JOptionPane.showInputDialog(this, "idCiudad (Enter to search by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idCity (Enter to search by name):");
         try {
             out.setText("");
-            Optional<Ciudad> optCiudad;
+            Optional<City> optCity;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optCiudad = cityService.findById(Integer.parseInt(idStr.trim()));
+                optCity = cityService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to update:");
                 if (nombre == null) {
                     return;
                 }
-                optCiudad = cityService.findByName(nombre.trim());
+                optCity = cityService.findByName(nombre.trim());
             }
             
-            if (!optCiudad.isPresent()) {
+            if (!optCity.isPresent()) {
                 out.append("✖ City does not exist\n");
                 return;
             }
 
-            Ciudad c = optCiudad.get();
+            City c = optCity.get();
             String nuevo = JOptionPane.showInputDialog(this, "New name:", c.getNombre());
             if (nuevo == null || nuevo.trim().isEmpty()) {
                 return;
             }
             c.setNombre(nuevo.trim());
             cityService.update(c);
-            out.append("✔ City updated -> id=" + c.getIdCiudad() + ", name=" + c.getNombre() + "\n");
+            out.append("✔ City updated -> id=" + c.getIdCity() + ", name=" + c.getNombre() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
@@ -120,28 +120,28 @@ public class CityABM extends JFrame {
     }
 
     private void delete() {
-        String idStr = JOptionPane.showInputDialog(this, "idCiudad (Enter to delete by name):");
+        String idStr = JOptionPane.showInputDialog(this, "idCity (Enter to delete by name):");
         try {
             out.setText("");
-            Optional<Ciudad> optCiudad;
+            Optional<City> optCity;
             if (idStr != null && !idStr.trim().isEmpty()) {
-                optCiudad = cityService.findById(Integer.parseInt(idStr.trim()));
+                optCity = cityService.findById(Integer.parseInt(idStr.trim()));
             } else {
                 String nombre = JOptionPane.showInputDialog(this, "Exact name to delete:");
                 if (nombre == null) {
                     return;
                 }
-                optCiudad = cityService.findByName(nombre.trim());
+                optCity = cityService.findByName(nombre.trim());
             }
             
-            if (!optCiudad.isPresent()) {
+            if (!optCity.isPresent()) {
                 out.append("✖ City does not exist\n");
                 return;
             }
 
-            Ciudad c = optCiudad.get();
+            City c = optCity.get();
             cityService.delete(c);
-            out.append("✔ City deleted -> id=" + c.getIdCiudad() + "\n");
+            out.append("✔ City deleted -> id=" + c.getIdCity() + "\n");
             refreshList();
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
@@ -156,13 +156,13 @@ public class CityABM extends JFrame {
         try {
             out.setText("");
             out.append("CITIES:\n");
-            List<Ciudad> ciudades = cityService.list();
+            List<City> ciudades = cityService.list();
 
             if (ciudades.isEmpty()) {
                 out.append("  (No cities yet)\n");
             } else {
-                for (Ciudad c : ciudades) {
-                    out.append(" - id=" + c.getIdCiudad() + " | " + c.getNombre() + "\n");
+                for (City c : ciudades) {
+                    out.append(" - id=" + c.getIdCity() + " | " + c.getNombre() + "\n");
                 }
             }
         } catch (Exception e) {

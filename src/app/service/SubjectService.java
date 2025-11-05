@@ -1,21 +1,21 @@
 package app.service;
 
-import model.Materia;
+import model.Subject;
 import java.util.List;
 import java.util.Optional;
 
 public interface SubjectService {
-    List<Materia> list();
+    List<Subject> list();
     
-    List<Materia> listByLevel(int nivel);
+    List<Subject> listByLevel(int nivel);
     
-    Optional<Materia> findById(Integer id);
+    Optional<Subject> findById(Integer id);
     
-    Optional<Materia> findByName(String nombre);
+    Optional<Subject> findByName(String nombre);
     
-    Materia create(String nombre, Integer nivel, Integer orden, Integer dniProfesor, Integer idCarrera);
+    Subject create(String nombre, Integer nivel, Integer orden, Integer dniProfesor, Integer idCarrera);
     
-    void update(Materia materia);
+    void update(Subject materia);
     
-    void delete(Materia materia);
+    void delete(Subject materia);
 }

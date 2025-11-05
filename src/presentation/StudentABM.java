@@ -1,8 +1,8 @@
 package presentation;
 
 import app.service.StudentService;
-import model.Alumno;
-import model.Ciudad;
+import model.Student;
+import model.City;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,17 +76,17 @@ public class StudentABM extends JFrame {
         String apellido = JOptionPane.showInputDialog(this, "Last name:");
         String nombre = JOptionPane.showInputDialog(this, "First name:");
         String fechaNac = JOptionPane.showInputDialog(this, "Birth date (yyyy-MM-dd):");
-        String idCiudad = JOptionPane.showInputDialog(this, "idCiudad:");
+        String idCity = JOptionPane.showInputDialog(this, "idCity:");
         String legajo = JOptionPane.showInputDialog(this, "Student number (int):");
         String anioIng = JOptionPane.showInputDialog(this, "Enrollment year (int):");
         String idMateria = JOptionPane.showInputDialog(this, "idMateria (optional):");
 
         if (dni == null || apellido == null || nombre == null || fechaNac == null
-                || idCiudad == null || legajo == null || anioIng == null) {
+                || idCity == null || legajo == null || anioIng == null) {
             return;
         }
 
-        if (dni.trim().isEmpty() || idCiudad.trim().isEmpty()
+        if (dni.trim().isEmpty() || idCity.trim().isEmpty()
                 || legajo.trim().isEmpty() || anioIng.trim().isEmpty()) {
             out.append("✖ Numeric fields are required\n");
             return;
@@ -99,12 +99,12 @@ public class StudentABM extends JFrame {
                 idMateriaInt = Integer.parseInt(idMateria.trim());
             }
 
-            Alumno a = studentService.create(
+            Student a = studentService.create(
                     apellido.trim(),
                     nombre.trim(),
                     Integer.parseInt(dni.trim()),
                     Date.valueOf(fechaNac.trim().replace('/', '-')),
-                    Integer.parseInt(idCiudad.trim()),
+                    Integer.parseInt(idCity.trim()),
                     Integer.parseInt(legajo.trim()),
                     Integer.parseInt(anioIng.trim()),
                     idMateriaInt
@@ -120,27 +120,27 @@ public class StudentABM extends JFrame {
         String dni = JOptionPane.showInputDialog(this, "Student DNI (Enter to search by LastName+FirstName):");
         try {
             out.setText("");
-            Optional<Alumno> optAlumno;
+            Optional<Student> optStudent;
             if (dni != null && !dni.trim().isEmpty()) {
-                optAlumno = studentService.findById(Integer.parseInt(dni.trim()));
+                optStudent = studentService.findById(Integer.parseInt(dni.trim()));
             } else {
                 String ape = JOptionPane.showInputDialog(this, "Exact last name:");
                 String nom = JOptionPane.showInputDialog(this, "Exact first name:");
                 if (ape == null || nom == null) {
                     return;
                 }
-                optAlumno = studentService.findByLastNameAndFirstName(ape.trim(), nom.trim());
+                optStudent = studentService.findByLastNameAndFirstName(ape.trim(), nom.trim());
             }
             
-            if (!optAlumno.isPresent()) {
+            if (!optStudent.isPresent()) {
                 out.append("✖ Student does not exist\n");
                 return;
             }
 
-            Alumno a = optAlumno.get();
+            Student a = optStudent.get();
             String legajo = JOptionPane.showInputDialog(this, "New student number:", String.valueOf(a.getNumLegajo()));
             String anioIng = JOptionPane.showInputDialog(this, "New enrollment year (int, Enter to keep):");
-            String idCiudad = JOptionPane.showInputDialog(this, "New idCiudad (Enter to keep):");
+            String idCity = JOptionPane.showInputDialog(this, "New idCity (Enter to keep):");
             String addMateria = JOptionPane.showInputDialog(this, "Add idMateria (Enter to skip):");
             String delMateria = JOptionPane.showInputDialog(this, "Remove idMateria (Enter to skip):");
 
@@ -150,10 +150,10 @@ public class StudentABM extends JFrame {
             if (anioIng != null && !anioIng.trim().isEmpty()) {
                 a.setAnioIngreso(Integer.parseInt(anioIng.trim()));
             }
-            if (idCiudad != null && !idCiudad.trim().isEmpty()) {
-                Ciudad c = new Ciudad();
-                c.setIdCiudad(Integer.parseInt(idCiudad.trim()));
-                a.setCiudad(c);
+            if (idCity != null && !idCity.trim().isEmpty()) {
+                City c = new City();
+                c.setIdCity(Integer.parseInt(idCity.trim()));
+                a.setCity(c);
             }
             
             // Apply changes first
@@ -190,13 +190,13 @@ public class StudentABM extends JFrame {
 
         try {
             out.setText("");
-            Optional<Alumno> optAlumno = studentService.findById(Integer.parseInt(dni.trim()));
-            if (!optAlumno.isPresent()) {
+            Optional<Student> optStudent = studentService.findById(Integer.parseInt(dni.trim()));
+            if (!optStudent.isPresent()) {
                 out.append("✖ Does not exist\n");
                 return;
             }
             
-            Alumno a = optAlumno.get();
+            Student a = optStudent.get();
             studentService.delete(a);
             out.append("✔ Student deleted\n");
             refreshList();
@@ -212,17 +212,17 @@ public class StudentABM extends JFrame {
     private void refreshList() {
         try {
             out.setText("");
-            List<Alumno> alumnos = studentService.list();
+            List<Student> alumnos = studentService.list();
             out.append("STUDENTS:\n");
             if (alumnos.isEmpty()) {
                 out.append("  (No students yet)\n");
             } else {
-                for (Alumno a : alumnos) {
+                for (Student a : alumnos) {
                     out.append(" - dni=" + a.getDni()
                             + " | " + a.getApellido() + ", " + a.getNombre()
                             + " | student number=" + a.getNumLegajo()
                             + " | enrollment year=" + a.getAnioIngreso()
-                            + " | idCiudad=" + (a.getCiudad() != null ? a.getCiudad().getIdCiudad() : null)
+                            + " | idCity=" + (a.getCity() != null ? a.getCity().getIdCity() : null)
                             + " | subjects=" + (a.getMaterias() != null ? a.getMaterias().size() : 0)
                             + "\n");
                 }

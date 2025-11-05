@@ -1,14 +1,14 @@
 package model;
 
-public class Ciudad {
+public class City {
 
     private String nombre;
     private Integer idCiudad;
 
-    public Ciudad() {
+    public City() {
     }
 
-    public Ciudad(String nombre) {
+    public City(String nombre) {
         this.nombre = nombre;
     }
 
@@ -30,7 +30,8 @@ public class Ciudad {
 
     @Override
     public String toString() {
-        return "{Ciudad: " + nombre + "}";
+        return "{City: " + nombre + "}";
     }
 
 }
+
