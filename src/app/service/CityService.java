@@ -9,11 +9,11 @@ public interface CityService {
     
     Optional<City> findById(Integer id);
     
-    Optional<City> findByName(String nombre);
+    Optional<City> findByName(String name);
     
-    City create(String nombre);
+    City create(String name);
     
-    void update(City ciudad);
+    void update(City city);
     
-    void delete(City ciudad);
+    void delete(City city);
 }

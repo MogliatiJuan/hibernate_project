@@ -9,11 +9,11 @@ public interface CareerService {
     
     Optional<Career> findById(Integer id);
     
-    Optional<Career> findByName(String nombre);
+    Optional<Career> findByName(String name);
     
-    Career create(String nombre, Integer idFacultad);
+    Career create(String name, Integer idFaculty);
     
-    void update(Career carrera);
+    void update(Career career);
     
-    void delete(Career carrera);
+    void delete(Career career);
 }

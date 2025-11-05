@@ -7,15 +7,15 @@ import java.util.Optional;
 public interface SubjectService {
     List<Subject> list();
     
-    List<Subject> listByLevel(int nivel);
+    List<Subject> listByLevel(int level);
     
     Optional<Subject> findById(Integer id);
     
-    Optional<Subject> findByName(String nombre);
+    Optional<Subject> findByName(String name);
     
-    Subject create(String nombre, Integer nivel, Integer orden, Integer dniProfesor, Integer idCarrera);
+    Subject create(String name, Integer level, Integer order, Integer dniProfessor, Integer idCareer);
     
-    void update(Subject materia);
+    void update(Subject subject);
     
-    void delete(Subject materia);
+    void delete(Subject subject);
 }

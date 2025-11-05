@@ -9,11 +9,11 @@ public interface FacultyService {
     
     Optional<Faculty> findById(Integer id);
     
-    Optional<Faculty> findByName(String nombre);
+    Optional<Faculty> findByName(String name);
     
-    Faculty create(String nombre, Integer idCiudad);
+    Faculty create(String name, Integer idCity);
     
-    void update(Faculty facultad);
+    void update(Faculty faculty);
     
-    void delete(Faculty facultad);
+    void delete(Faculty faculty);
 }

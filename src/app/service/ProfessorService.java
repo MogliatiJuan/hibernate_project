@@ -9,11 +9,11 @@ public interface ProfessorService {
     
     Optional<Professor> findById(Integer dni);
     
-    Optional<Professor> findByLastNameAndFirstName(String apellido, String nombre);
+    Optional<Professor> findByLastNameAndFirstName(String lastName, String firstName);
     
-    Professor create(String apellido, String nombre, Integer dni, String fechaNac, Integer antiguedad, Integer idCiudad);
+    Professor create(String lastName, String firstName, Integer dni, String birthDateYmd, Integer seniority, Integer idCity);
     
-    void update(Professor profesor);
+    void update(Professor professor);
     
-    void delete(Professor profesor);
+    void delete(Professor professor);
 }

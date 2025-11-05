@@ -10,15 +10,15 @@ public interface StudentService {
     
     Optional<Student> findById(Integer dni);
     
-    Optional<Student> findByLastNameAndFirstName(String apellido, String nombre);
+    Optional<Student> findByLastNameAndFirstName(String lastName, String firstName);
     
-    Student create(String apellido, String nombre, Integer dni, Date fechaNac, Integer idCiudad, Integer numLegajo, Integer anioIngreso, Integer idMateria);
+    Student create(String lastName, String firstName, Integer dni, Date birthDate, Integer idCity, Integer studentNumber, Integer enrollmentYear, Integer idSubject);
     
-    void update(Student alumno);
+    void update(Student student);
     
-    void delete(Student alumno);
+    void delete(Student student);
     
-    void addSubject(Integer dniStudent, Integer idMateria);
+    void addSubject(Integer dniStudent, Integer idSubject);
     
-    void removeSubject(Integer dniStudent, Integer idMateria);
+    void removeSubject(Integer dniStudent, Integer idSubject);
 }
