@@ -54,7 +54,7 @@ erDiagram
         int idSubject PK
         string name
         int level
-        int order
+        int orderNumber
         int dniProfessor FK
         int idCareer FK
     }
