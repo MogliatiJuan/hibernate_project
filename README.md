@@ -1,5 +1,6 @@
 # Hibernate Project - Faculty Management System
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java](https://img.shields.io/badge/Java-8%2B-orange.svg)](https://www.oracle.com/java/)
 [![Hibernate](https://img.shields.io/badge/Hibernate-4.3.x-blue.svg)](https://hibernate.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
@@ -7,18 +8,35 @@
 
 Academic management system developed with **Java Swing** and **Hibernate**, implementing **Clean Architecture** principles. Provides complete administration of academic domain entities (Cities, Faculties, Careers, Professors, Subjects, and Students).
 
+> **📚 Academic Project**: This project is part of my learning process and demonstrates Clean Architecture and ORM concepts. It has been published to showcase my understanding of enterprise-level software design patterns and database management practices.
+
+## Academic Context
+
+This project was developed as part of the **Programming and Software Architecture** course at UTN.
+
+**Important Note on Technology Versions**: The project uses specific versions of technologies (Hibernate 4.3.x, Java 8, NetBeans 8.2) as required by the academic curriculum. These versions were chosen by the faculty to align with the course's learning objectives and ensure compatibility with the teaching materials.
+
 ## 📋 Table of Contents
 
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Requirements](#-requirements)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Usage](#-usage)
-- [Project Structure](#-project-structure)
-- [Technologies](#-technologies)
+- [Academic Context](#academic-context)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Architecture](#architecture)
+- [Project Structure](#project-structure)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Entity Diagrams](#entity-diagrams)
+- [Data Flow](#data-flow)
+- [Design Principles Applied](#design-principles-applied)
+- [Project Metrics](#project-metrics)
+- [Concepts Applied](#concepts-applied)
+- [Important Notes](#important-notes)
+- [License](#license)
+- [References](#references)
 
-## ✨ Features
+## Features
 
 ### Functionality
 
@@ -51,7 +69,21 @@ Academic management system developed with **Java Swing** and **Hibernate**, impl
 - Professor: PK = DNI
 - Student: PK = DNI
 
-## 🏗️ Architecture
+## Screenshots
+
+> **Note**: Screenshots will be added to showcase the application's user interface and key features.
+
+
+### Main Menu
+![Main Menu](docs/screenshots/main-menu.png)
+
+### Entity Management
+![City ABM](docs/screenshots/city-abm.png)
+![Faculty ABM](docs/screenshots/faculty-abm.png)
+![Student ABM](docs/screenshots/student-abm.png)
+
+
+## Architecture
 
 This project implements **Clean Architecture** with clear separation of responsibilities.
 
@@ -63,14 +95,14 @@ This project implements **Clean Architecture** with clear separation of responsi
 User interface with Swing. ABMs don't know Hibernate implementation details.
 
 **Main classes:**
-- `MenuFacultad` - Main menu of the application
+- `FacultyMenu` - Main menu of the application
 - `*ABM.java` - Administration windows for each entity
 
 #### 🎯 Application Layer (`src/app/service/`)
 Interfaces that define business contracts.
 
 **Interfaces:**
-- `CiudadService`, `FacultadService`, `CarreraService`, `ProfesorService`, `MateriaService`, `AlumnoService`
+- `CityService`, `FacultyService`, `CareerService`, `ProfessorService`, `SubjectService`, `StudentService`
 
 #### 🔧 Infrastructure Layer (`src/infra/service/`)
 Concrete service implementations using Hibernate.
@@ -83,9 +115,9 @@ Concrete service implementations using Hibernate.
 Domain entities and utilities.
 
 **Entities:**
-- `Ciudad`, `Facultad`, `Carrera`, `Profesor`, `Materia`, `Alumno`, `Persona`
+- `City`, `Faculty`, `Career`, `Professor`, `Subject`, `Student`, `Person`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Hibernate_Project/
@@ -102,14 +134,14 @@ Hibernate_Project/
 │
 ├── src/
 │   ├── presentation/             # 🎨 Presentation Layer
-│   │   ├── MenuFacultad.java    # Main entry point
+│   │   ├── FacultyMenu.java      # Main entry point
 │   │   ├── CityABM.java
 │   │   ├── FacultyABM.java
 │   │   ├── CareerABM.java
 │   │   ├── ProfessorABM.java
 │   │   ├── SubjectABM.java
 │   │   ├── StudentABM.java
-│   │   └── gestorFacultad.java  # Data initialization script
+│   │   └── FacultyManager.java   # Data initialization script
 │   │
 │   ├── app/                      # 🎯 Application Layer
 │   │   └── service/              # Service interfaces
@@ -131,13 +163,13 @@ Hibernate_Project/
 │   │       └── HibernateStudentService.java
 │   │
 │   ├── model/                    # 📦 Domain Layer
-│   │   ├── Ciudad.java
-│   │   ├── Facultad.java
-│   │   ├── Carrera.java
-│   │   ├── Persona.java
-│   │   ├── Profesor.java
-│   │   ├── Materia.java
-│   │   ├── Alumno.java
+│   │   ├── City.java
+│   │   ├── Faculty.java
+│   │   ├── Career.java
+│   │   ├── Person.java
+│   │   ├── Professor.java
+│   │   ├── Subject.java
+│   │   ├── Student.java
 │   │   ├── MappingClasses.hbm.xml  # Hibernate mappings
 │   │   └── util/
 │   │       └── HibernateUtil.java
@@ -152,7 +184,7 @@ Hibernate_Project/
 └── README.md                     # This file
 ```
 
-## 🛠️ Requirements
+## Requirements
 
 ### Software
 
@@ -171,7 +203,7 @@ The following libraries are included in `/lib`:
 - `hibernate-entitymanager-4.3.1.Final.jar`
 - And other Hibernate dependencies
 
-## 🚀 Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -223,7 +255,7 @@ Edit `src/hibernate.cfg.xml` with your MySQL credentials:
 3. Verify that libraries in `/lib` are added to the classpath
 4. Build → Clean and Build Project
 
-## ⚙️ Configuration
+## Configuration
 
 ### `hibernate.cfg.xml` Options
 
@@ -242,7 +274,7 @@ The `hibernate.cfg.xml` file contains the connection configuration. Make sure:
 - ✅ Existing database name
 - ✅ Timezone configured correctly
 
-## 🎮 Usage
+## Usage
 
 ### Running the Application
 
@@ -251,22 +283,22 @@ The application is designed to be run from **NetBeans IDE**.
 1. **Ensure the database is created** (see Step 2 in Installation)
 2. **Configure database credentials** (see Step 4 in Installation)
 3. Open the project in NetBeans
-4. Find the class: `presentation.MenuFacultad`
+4. Find the class: `presentation.FacultyMenu`
 5. Right-click → Run File
 6. Or use the Run button (▶️)
 
 **Note:** If you get "database doesn't exist" error, make sure you created the database first (see Installation Step 2).
 
 
-## 🔍 Entity Diagrams
+## Entity Diagrams
 
 > **See:** [Entity Relationship Diagram](docs/diagrams/entity-relationship.md)
 
-## 🧪 Data Flow
+## Data Flow
 
 > **See:** [Data Flow Diagram](docs/diagrams/data-flow.md)
 
-## 🏛️ Design Principles Applied
+## Design Principles Applied
 
 ### Clean Architecture
 
@@ -281,7 +313,7 @@ The application is designed to be run from **NetBeans IDE**.
 - **Dependency Injection**: Services injected in ABM constructors
 - **Service Layer Pattern**: Separation between business logic and data access
 
-## 📊 Project Metrics
+## Project Metrics
 
 - **Lines of code**: ~3000+
 - **Classes**: 20+
@@ -290,7 +322,7 @@ The application is designed to be run from **NetBeans IDE**.
 - **Entities**: 6 domain entities
 - **Duplication reduction**: ~50% less code in services
 
-## 🎓 Concepts Applied
+## Concepts Applied
 
 - ✅ Clean Architecture
 - ✅ Dependency Injection
@@ -300,7 +332,7 @@ The application is designed to be run from **NetBeans IDE**.
 - ✅ Service Layer Pattern
 - ✅ Template Method Pattern
 
-## 📝 Important Notes
+## Important Notes
 
 ### Creation Order
 
@@ -318,7 +350,7 @@ To avoid foreign key errors, create entities in this order:
 When creating entities that require relationships:
 1. Use "List" first to see available IDs
 2. Use those IDs when creating new entities
-3. Example: Creating Faculty requires `idCiudad` → list Cities first
+3. Example: Creating Faculty requires `idCity` → list Cities first
 
 ### Transactions
 
@@ -326,11 +358,13 @@ When creating entities that require relationships:
 - Transactions are automatically rolled back on error
 - Sessions are automatically closed in `finally` blocks
 
-## 📄 License
+## License
 
-This project is part of an academic practical work. Educational use.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 References
+This project is part of an academic practical work and has been published to demonstrate learning and showcase professional documentation practices. The MIT License provides transparency and clarity about the project's use and distribution.
+
+## References
 
 - [Hibernate Documentation](https://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/)
 - [Clean Architecture by Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
