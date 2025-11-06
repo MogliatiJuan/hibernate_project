@@ -79,7 +79,11 @@ public class CityABM extends JFrame {
             out.setText("");
             City c = cityService.create(nombre.trim());
             out.append("✔ City created -> id=" + c.getIdCity() + ", name=" + c.getName() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -113,7 +117,11 @@ public class CityABM extends JFrame {
             c.setName(nuevo.trim());
             cityService.update(c);
             out.append("✔ City updated -> id=" + c.getIdCity() + ", name=" + c.getName() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -142,7 +150,11 @@ public class CityABM extends JFrame {
             City c = optCity.get();
             cityService.delete(c);
             out.append("✔ City deleted -> id=" + c.getIdCity() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
         }

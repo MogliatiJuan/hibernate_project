@@ -107,7 +107,11 @@ public class SubjectABM extends JFrame {
 
             out.append("✔ Subject created -> id=" + m.getIdSubject() + ", name=" + m.getName()
                     + " | level=" + m.getLevel() + " | prof=" + (m.getProfessor() != null ? m.getProfessor().getDni() : null) + " | idCareer=" + m.getCareer().getIdCareer() + "\n");
+            try {
             refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -171,7 +175,11 @@ public class SubjectABM extends JFrame {
 
             subjectService.update(m);
             out.append("✔ Subject updated -> id=" + m.getIdSubject() + "\n");
+            try {
             refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -200,7 +208,11 @@ public class SubjectABM extends JFrame {
             Subject m = optSubject.get();
             subjectService.delete(m);
             out.append("✔ Subject deleted -> id=" + m.getIdSubject() + "\n");
+            try {
             refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
         }

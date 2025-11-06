@@ -82,7 +82,11 @@ public class FacultyABM extends JFrame {
             out.setText("");
             Faculty f = facultyService.create(nombre.trim(), Integer.parseInt(idCity.trim()));
             out.append("✔ Faculty created -> id=" + f.getIdFaculty() + ", name=" + f.getName() + ", idCity=" + f.getCity().getIdCity() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -125,7 +129,11 @@ public class FacultyABM extends JFrame {
             
             facultyService.update(f);
             out.append("✔ Faculty updated -> id=" + f.getIdFaculty() + ", name=" + f.getName() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -154,7 +162,11 @@ public class FacultyABM extends JFrame {
             Faculty f = optFaculty.get();
             facultyService.delete(f);
             out.append("✔ Faculty deleted -> id=" + f.getIdFaculty() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
         }

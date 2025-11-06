@@ -86,7 +86,11 @@ public class CareerABM extends JFrame {
             Career c = careerService.create(nombre.trim(), Integer.parseInt(idFaculty.trim()));
             out.append("✔ Career created -> id=" + c.getIdCareer() + ", name=" + c.getName()
                     + ", idFaculty=" + c.getFaculty().getIdFaculty() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -127,7 +131,11 @@ public class CareerABM extends JFrame {
 
             careerService.update(c);
             out.append("✔ Career updated -> id=" + c.getIdCareer() + ", name=" + c.getName() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -156,7 +164,11 @@ public class CareerABM extends JFrame {
             Career c = optCareer.get();
             careerService.delete(c);
             out.append("✔ Career deleted -> id=" + c.getIdCareer() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
         }

@@ -97,7 +97,11 @@ public class ProfessorABM extends JFrame {
                     Integer.parseInt(idCity.trim())
             );
             out.append("✔ Professor created -> dni=" + p.getDni() + ", " + p.getLastName() + ", " + p.getFirstName() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -139,7 +143,11 @@ public class ProfessorABM extends JFrame {
 
             professorService.update(p);
             out.append("✔ Professor updated -> dni=" + p.getDni() + "\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR: " + e.getMessage() + "\n");
         }
@@ -162,7 +170,11 @@ public class ProfessorABM extends JFrame {
             Professor p = optProfessor.get();
             professorService.delete(p);
             out.append("✔ Professor deleted\n");
-            refreshList();
+            try {
+                refreshList();
+            } catch (Exception e) {
+                out.append("⚠ Warning: Could not refresh list: " + e.getMessage() + "\n");
+            }
         } catch (Exception e) {
             out.append("✖ ERROR (FKs?): " + e.getMessage() + "\n");
         }
