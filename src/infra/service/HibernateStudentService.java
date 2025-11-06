@@ -14,7 +14,11 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
     @Override
     public List<Student> list() {
         return executeInSession(session -> {
-            return createQuery(session, "from Student a order by a.lastName, a.firstName", Student.class);
+            // Use join fetch to eagerly load subjects collection to avoid lazy initialization errors
+            List<Student> students = createQuery(session, 
+                "select distinct a from Student a left join fetch a.subjects order by a.lastName, a.firstName", 
+                Student.class);
+            return students;
         });
     }
 
@@ -62,6 +66,9 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
             Subject m = null;
             if (idSubject != null) {
                 m = (Subject) session.get(Subject.class, idSubject);
+                if (m == null) {
+                    throw new IllegalArgumentException("Subject does not exist with id: " + idSubject);
+                }
             }
             
             Student a = new Student(lastName.trim(), firstName.trim(), dni, birthDate, c, studentNumber, enrollmentYear, null);
@@ -81,7 +88,18 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
         }
         
         executeInTransaction(session -> {
-            Student a = (Student) session.get(Student.class, student.getDni());
+            // Use HQL with join fetch to eagerly load subjects collection
+            org.hibernate.Query q = session.createQuery(
+                "select distinct a from Student a left join fetch a.subjects where a.dni = :dni");
+            q.setInteger("dni", student.getDni());
+            @SuppressWarnings("unchecked")
+            List<Student> students = (List<Student>) q.list();
+            
+            Student a = null;
+            if (students != null && !students.isEmpty()) {
+                a = students.get(0);
+            }
+            
             if (a == null) {
                 throw new IllegalArgumentException("Student not found with DNI: " + student.getDni());
             }
@@ -95,6 +113,7 @@ public class HibernateStudentService extends BaseHibernateService implements Stu
                 }
             }
             
+            // Now subjects collection is already loaded, safe to access
             a.getSubjects().clear();
             if (student.getSubjects() != null) {
                 for (Subject m : student.getSubjects()) {

@@ -2,63 +2,67 @@
 
 This diagram shows the database schema and relationships between entities.
 
+> **Note:** The actual table names in the database are in Spanish (ciudad, facultad, carrera, profesor, materia, alumno, persona), but this diagram uses English names for clarity and consistency with the codebase.
+
 ```mermaid
 erDiagram
-    CIUDAD ||--o{ FACULTAD : "has"
-    CIUDAD ||--o{ PROFESOR : "lives_in"
-    CIUDAD ||--o{ ALUMNO : "lives_in"
+    PERSON ||--|| PROFESSOR : "extends"
+    PERSON ||--|| STUDENT : "extends"
     
-    FACULTAD ||--o{ CARRERA : "has"
+    CITY ||--o{ FACULTY : "has"
+    CITY ||--o{ PERSON : "lives_in"
     
-    CARRERA ||--o{ MATERIA : "has"
+    FACULTY ||--o{ CAREER : "has"
     
-    PROFESOR ||--o{ MATERIA : "teaches"
+    CAREER ||--o{ SUBJECT : "has"
     
-    MATERIA }o--o{ ALUMNO : "enrolled_in"
+    PROFESSOR ||--o{ SUBJECT : "teaches"
     
-    CIUDAD {
-        int idCiudad PK
-        string nombre
-    }
+    SUBJECT }o--o{ STUDENT : "enrolled_in"
     
-    FACULTAD {
-        int idFacultad PK
-        string nombre
-        int idCiudad FK
-    }
-    
-    CARRERA {
-        int idCarrera PK
-        string nombre
-        int idFacultad FK
-    }
-    
-    PROFESOR {
+    PERSON {
         int dni PK
-        string apellido
-        string nombre
-        string fechaNac
-        int antiguedad
-        int idCiudad FK
+        string lastName
+        string firstName
+        date birthDate
+        int idCity FK
     }
     
-    MATERIA {
-        int idMateria PK
-        string nombre
-        int nivel
-        int orden
-        int dniProfesor FK
-        int idCarrera FK
+    CITY {
+        int idCity PK
+        string name
     }
     
-    ALUMNO {
-        int dni PK
-        string apellido
-        string nombre
-        date fechaNac
-        int numLegajo
-        int anioIngreso
-        int idCiudad FK
+    FACULTY {
+        int idFaculty PK
+        string name
+        int idCity FK
+    }
+    
+    CAREER {
+        int idCareer PK
+        string name
+        int idFaculty FK
+    }
+    
+    PROFESSOR {
+        int dni PK_FK
+        int seniority
+    }
+    
+    SUBJECT {
+        int idSubject PK
+        string name
+        int level
+        int order
+        int dniProfessor FK
+        int idCareer FK
+    }
+    
+    STUDENT {
+        int dni PK_FK
+        int studentNumber
+        int enrollmentYear
     }
 ```
 
