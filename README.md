@@ -259,11 +259,20 @@ Edit `src/hibernate.cfg.xml` with your MySQL credentials:
 
 ### `hibernate.cfg.xml` Options
 
-| Property | Recommended Value | Description |
-|----------|-------------------|-------------|
+| Property | Current Value | Description |
+|----------|---------------|-------------|
+| `hbm2ddl.auto` | `create-drop` | **⚠️ IMPORTANT**: Drops and recreates all tables on each application start. All data will be lost when the application closes. Use only for development/testing. |
+| `hbm2ddl.auto` | `update` | Updates schema automatically (preserves existing data) |
 | `hbm2ddl.auto` | `validate` | Validates schema without modifying it |
-| `hbm2ddl.auto` | `update` | Updates schema automatically |
 | `show_sql` | `true` | Shows SQL queries in console |
+
+**⚠️ Warning about `create-drop`**: This configuration is set to `create-drop`, which means:
+- All tables are **dropped** when the application starts
+- All tables are **recreated** from scratch
+- All data is **lost** when the application shuts down
+- This is suitable for **development and testing only**
+
+For production, change to `update` or `validate` to preserve data.
 
 ### Database Configuration
 
