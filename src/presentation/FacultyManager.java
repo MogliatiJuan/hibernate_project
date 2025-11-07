@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 
 import java.sql.Date;
 
-public class gestorFacultad {
+public class FacultyManager {
 
     public static void main(String[] args) {
         Session ss = HibernateUtil.getSF().openSession();
@@ -119,3 +119,4 @@ public class gestorFacultad {
         return m;
     }
 }
+

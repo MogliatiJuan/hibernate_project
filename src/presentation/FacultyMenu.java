@@ -11,9 +11,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class MenuFacultad extends JFrame {
+public class FacultyMenu extends JFrame {
 
-    public MenuFacultad() {
+    public FacultyMenu() {
         setTitle("Hibernate Project — Main Menu");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -113,6 +113,7 @@ public class MenuFacultad extends JFrame {
 }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MenuFacultad().setVisible(true));
+        SwingUtilities.invokeLater(() -> new FacultyMenu().setVisible(true));
     }
 }
+
