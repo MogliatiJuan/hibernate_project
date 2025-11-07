@@ -4,85 +4,85 @@
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.Person" table="persona">
+    <class name="model.Person" table="person">
         <id name="dni" column="dni" type="int">
             <generator class="assigned"/>
         </id>
 
-        <property name="lastName" column="apellido" type="string" not-null="true"/>
-        <property name="firstName"   column="nombre"   type="string" not-null="true"/>
-        <property name="birthDate" column="fechaNac" type="date"/>
+        <property name="lastName" column="lastName" type="string" not-null="true"/>
+        <property name="firstName"   column="firstName"   type="string" not-null="true"/>
+        <property name="birthDate" column="birthDate" type="date"/>
 
-        <many-to-one name="city" class="model.City" column="idCiudad"  lazy="proxy" not-null="true" cascade="save-update"/>
+        <many-to-one name="city" class="model.City" column="idCity"  lazy="proxy" not-null="true" cascade="save-update"/>
 
     
-        <joined-subclass name="model.Student" table="alumno">
+        <joined-subclass name="model.Student" table="student">
             <key column="dni"/>
 
-            <property name="studentNumber"   column="numLegajo"   type="int"  not-null="true" unique="true"/>
-            <property name="enrollmentYear" column="anioIngreso" type="int"   not-null="true"/>
+            <property name="studentNumber"   column="studentNumber"   type="int"  not-null="true" unique="true"/>
+            <property name="enrollmentYear" column="enrollmentYear" type="int"   not-null="true"/>
 
-            <set name="subjects" table="materia_alumno" lazy="true">
-                <key column="dniAlumno"/>
-                <many-to-many class="model.Subject" column="idMateria"/>
+            <set name="subjects" table="subject_student" lazy="true">
+                <key column="dniStudent"/>
+                <many-to-many class="model.Subject" column="idSubject"/>
             </set>
         </joined-subclass>
 
 
-        <joined-subclass name="model.Professor" table="profesor">
+        <joined-subclass name="model.Professor" table="professor">
             <key column="dni"/>
             <property name="seniority" type="int"/>
         </joined-subclass>
     </class>
 
-    <class name="model.City" table="ciudad">
-        <id name="idCity" column="idCiudad" type="int" >
+    <class name="model.City" table="city">
+        <id name="idCity" column="idCity" type="int" >
             <generator class="identity"/>
         </id>
-        <property name="name" column="nombre" type="string" not-null="true"/>
+        <property name="name" column="name" type="string" not-null="true"/>
     </class>
 
-    <class name="model.Faculty" table="facultad">
-        <id name="idFaculty" column="idFacultad" type="int">
+    <class name="model.Faculty" table="faculty">
+        <id name="idFaculty" column="idFaculty" type="int">
             <generator class="identity"/>
         </id>
-        <property name="name" column="nombre" type="string" not-null="true"/>
-        <many-to-one name="city" class="model.City" column="idCiudad" not-null="true"  cascade="save-update"/>
+        <property name="name" column="name" type="string" not-null="true"/>
+        <many-to-one name="city" class="model.City" column="idCity" not-null="true"  cascade="save-update"/>
     </class>
 
-    <class name="model.Career" table="carrera">
-        <id name="idCareer" column="idCarrera" type="int">
+    <class name="model.Career" table="career">
+        <id name="idCareer" column="idCareer" type="int">
             <generator class="identity"/>
         </id>
-        <property name="name" column="nombre" type="string" not-null="true"/>
+        <property name="name" column="name" type="string" not-null="true"/>
 
     
-        <many-to-one name="faculty" class="model.Faculty" column="idFacultad" not-null="true" cascade="save-update"/>
+        <many-to-one name="faculty" class="model.Faculty" column="idFaculty" not-null="true" cascade="save-update"/>
 
     
         <list name="subjects" inverse="true" lazy="true" cascade="all-delete-orphan">
-            <key column="idCarrera"/>
-            <index column="orden"/>
+            <key column="idCareer"/>
+            <index column="orderNumber"/>
             <one-to-many class="model.Subject"/>
         </list>
     </class>
 
   
-    <class name="model.Subject" table="materia">
-        <id name="idSubject" column="idMateria" type="int">
+    <class name="model.Subject" table="subject">
+        <id name="idSubject" column="idSubject" type="int">
             <generator class="identity"/>
         </id>
-        <property name="name" column="nombre" type="string" not-null="true"/>
-        <property name="level"  column="nivel"  type="int" not-null="true"/>
-        <property name="order"  column="orden"  type="int"/>
+        <property name="name" column="name" type="string" not-null="true"/>
+        <property name="level"  column="level"  type="int" not-null="true"/>
+        <property name="order"  column="orderNumber"  type="int"/>
 
-        <many-to-one name="professor" class="model.Professor" column="dniProfesor" lazy="proxy"/>
-        <many-to-one name="career"  class="model.Career"  column="idCarrera" not-null="true" lazy="proxy"/>
+        <many-to-one name="professor" class="model.Professor" column="dniProfessor" lazy="proxy"/>
+        <many-to-one name="career"  class="model.Career"  column="idCareer" not-null="true" lazy="proxy"/>
 
     
-        <set name="students" table="materia_alumno" inverse="true" lazy="true">
-            <key column="idMateria"/>
-            <many-to-many class="model.Student" column="dniAlumno"/>
+        <set name="students" table="subject_student" inverse="true" lazy="true">
+            <key column="idSubject"/>
+            <many-to-many class="model.Student" column="dniStudent"/>
         </set>
 
     </class>
